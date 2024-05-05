@@ -41,6 +41,7 @@ namespace Data.Entities
                     .WithMany(a => a.HistoryTournamentOfMatchHistory)
                     .HasForeignKey(x => x.IdHistoryMatch)
                     .HasConstraintName("FK_HistoryTournament_MatchHistory");
+
         }
     }
 }

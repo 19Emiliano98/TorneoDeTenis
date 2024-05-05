@@ -14,7 +14,7 @@ namespace Data.Entities
         public int IdTournament { get; set; }
         public int IdMatch { get; set; }
 
-        public virtual Match Match { get; set; }
+        public virtual Match MatchHistoryList { get; set; }
         public virtual ICollection<HistoryTournament> HistoryTournamentOfMatchHistory { get; set; }
     }
 
@@ -28,8 +28,8 @@ namespace Data.Entities
             builder.Property(x => x.IdTournament).HasColumnName("IdTournament").IsRequired();
             builder.Property(x => x.IdMatch).HasColumnName("IdMatch").IsRequired();
 
-            builder.HasOne(a => a.Match)
-                    .WithMany(a => a.MatchHistory)
+            builder.HasOne(a => a.MatchHistoryList)
+                    .WithMany(a => a.MatchHistoryCollection)
                     .HasForeignKey(x => x.IdMatch)
                     .HasConstraintName("FK_MatchHistory_Match");
 

@@ -12,15 +12,16 @@ namespace Data.Configuration
         {
             IConfiguration _config;
 
-            using (var ServiceScoped = collection.BuildServiceProvider().CreateScope())
+            using (var ServiceScope = collection.BuildServiceProvider().CreateScope())
             {
-                _config = ServiceScoped.ServiceProvider.GetService<IConfiguration>();
+                _config = ServiceScope.ServiceProvider.GetService<IConfiguration>()!;
             }
+            
             var ApllicationOptions = new ApllicationOptions();
+            
             _config.GetSection(ApllicationOptions.Section).Bind(ApllicationOptions);
 
-            collection.AddDbContext<TournamentContext>(options =>
-            options.UseSqlServer(ApllicationOptions.ConnectionString));
+            collection.AddDbContext<TournamentContext>(options => options.UseSqlServer(ApllicationOptions.ConnectionString));
         }
 
     }

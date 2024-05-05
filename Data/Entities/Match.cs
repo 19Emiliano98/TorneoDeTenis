@@ -11,12 +11,12 @@ namespace Data.Entities
     public class Match
     {
         public int Id { get; set; }
-        public int IdWinner { get; set; }
-        public int IdLoser { get; set; }
+        public int? IdWinner { get; set; }
+        public int? IdLoser { get; set; }
 
-        public virtual Player Winner { get; set; }
-        public virtual Player Loser { get; set; }
-        public virtual ICollection<MatchHistory> MatchHistory { get; set; }
+        public virtual Player MatchWinner { get; set; }
+        public virtual Player MatchLoser { get; set; }
+        public virtual ICollection<MatchHistory> MatchHistoryCollection { get; set; }
     }
 
     public class MatchConfig : IEntityTypeConfiguration<Match>
@@ -29,17 +29,19 @@ namespace Data.Entities
             builder.Property(x => x.IdWinner).HasColumnName("IdWinner").IsRequired();
             builder.Property(x => x.IdLoser).HasColumnName("IdLoser").IsRequired();
 
-            builder.HasOne(a => a.Winner)
-                    .WithMany(a => a.Match)
+            builder.HasOne(a => a.MatchWinner)
+                    .WithMany(a => a.PlayerWinner)
                     .HasForeignKey(x => x.IdWinner)
-                    .HasConstraintName("FK_Match_Player_Winner");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Match_Winner");
 
-            builder.HasOne(a => a.Loser)
-                    .WithMany(a => a.Match)
+            builder.HasOne(a => a.MatchLoser)
+                    .WithMany(a => a.PlayerLoser)
                     .HasForeignKey(x => x.IdLoser)
-                    .HasConstraintName("FK_Match_Player_Loser");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Match_Loser");
 
-            builder.HasMany(x => x.MatchHistory).WithOne(x => x.Match);
+            builder.HasMany(x => x.MatchHistoryCollection).WithOne(x => x.MatchHistoryList);
         }
     }
 }

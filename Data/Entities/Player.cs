@@ -16,7 +16,8 @@ namespace Data.Entities
         public int Strenght { get; set; }
         public int Speed { get; set; }
 
-        public virtual ICollection<Match> Match { get; set; }
+        public virtual ICollection<Match> PlayerWinner { get; set; }
+        public virtual ICollection<Match> PlayerLoser { get; set; }
         public virtual ICollection<HistoryTournament> HistoryTournamentOfPlayer { get; set; }
     }
 
@@ -32,78 +33,76 @@ namespace Data.Entities
             builder.Property(x => x.Strenght).HasColumnName("Strenght").IsRequired();
             builder.Property(x => x.Speed).HasColumnName("Speed").IsRequired();
 
-            builder.HasMany(x => x.Match).WithOne(x => x.Winner);
+            builder.HasMany(x => x.PlayerWinner).WithOne(x => x.MatchWinner);
 
-            builder.HasMany(x => x.Match).WithOne(x => x.Loser);
+            builder.HasMany(x => x.PlayerLoser).WithOne(x => x.MatchLoser);
 
-            builder.HasMany(x => x.HistoryTournamentOfPlayer).WithOne(x => x.IdPlayerForeignKey);
-
-            builder.HasData(
-                new Player()
-                {
-                    Id = 1,
-                    Name = "Facundo Villalobo",
-                    Luck = 0,
-                    Strenght = 80,
-                    Speed = 32
-                },
-                new Player()
-                {
-                    Id = 2,
-                    Name = "Matias Corredera",
-                    Luck = 0,
-                    Strenght = 60,
-                    Speed = 40
-                },
-                new Player()
-                {
-                    Id = 3,
-                    Name = "Lautaro De Simeone",
-                    Luck = 0,
-                    Strenght = 61,
-                    Speed = 39
-                },
-                new Player()
-                {
-                    Id = 4,
-                    Name = "Emiliano Caballero",
-                    Luck = 0,
-                    Strenght = 65,
-                    Speed = 34
-                },
-                new Player()
-                {
-                    Id = 5,
-                    Name = "Carlos Palladino",
-                    Luck = 0,
-                    Strenght = 59,
-                    Speed = 35
-                },
-                new Player()
-                {
-                    Id = 6,
-                    Name = "Gustavo Lucci",
-                    Luck = 0,
-                    Strenght = 69,
-                    Speed = 31
-                },
-                new Player()
-                {
-                    Id = 7,
-                    Name = "Roque Olguin",
-                    Luck = 0,
-                    Strenght = 49,
-                    Speed = 70
-                },
-                new Player()
-                {
-                    Id = 8,
-                    Name = "Joaquin Martinez",
-                    Luck = 0,
-                    Strenght = 50,
-                    Speed = 47
-                }
-            );
+            //builder.HasData(
+            //    new Player()
+            //    {
+            //        Id = 1,
+            //        Name = "Facundo Villalobo",
+            //        Luck = 0,
+            //        Strenght = 80,
+            //        Speed = 32
+            //    },
+            //    new Player()
+            //    {
+            //        Id = 2,
+            //        Name = "Matias Corredera",
+            //        Luck = 0,
+            //        Strenght = 60,
+            //        Speed = 40
+            //    },
+            //    new Player()
+            //    {
+            //        Id = 3,
+            //        Name = "Lautaro De Simeone",
+            //        Luck = 0,
+            //        Strenght = 61,
+            //        Speed = 39
+            //    },
+            //    new Player()
+            //    {
+            //        Id = 4,
+            //        Name = "Emiliano Caballero",
+            //        Luck = 0,
+            //        Strenght = 65,
+            //        Speed = 34
+            //    },
+            //    new Player()
+            //    {
+            //        Id = 5,
+            //        Name = "Carlos Palladino",
+            //        Luck = 0,
+            //        Strenght = 59,
+            //        Speed = 35
+            //    },
+            //    new Player()
+            //    {
+            //        Id = 6,
+            //        Name = "Gustavo Lucci",
+            //        Luck = 0,
+            //        Strenght = 69,
+            //        Speed = 31
+            //    },
+            //    new Player()
+            //    {
+            //        Id = 7,
+            //        Name = "Roque Olguin",
+            //        Luck = 0,
+            //        Strenght = 49,
+            //        Speed = 70
+            //    },
+            //    new Player()
+            //    {
+            //        Id = 8,
+            //        Name = "Joaquin Martinez",
+            //        Luck = 0,
+            //        Strenght = 50,
+            //        Speed = 47
+            //    }
+            //);
 
         }
     }

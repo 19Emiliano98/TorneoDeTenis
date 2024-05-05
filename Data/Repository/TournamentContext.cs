@@ -16,30 +16,21 @@ namespace Data.Repository
 
         }
 
-        public DbSet<HistoryTournament> historyTournaments { get; set; }
-        public DbSet<Match> Matches { get; set; }
-        public DbSet<MatchHistory> MatchHistories { get; set; }
-        public DbSet<Player> Plkayers { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
         }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
 
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            modelBuilder.ApplyConfiguration(new HistoryTournamentConfig());
-            modelBuilder.ApplyConfiguration(new MatchConfig());
-            modelBuilder.ApplyConfiguration(new MatchHistoryConfig());
-            modelBuilder.ApplyConfiguration(new PlayerConfig());
-
+            //builder.ApplyConfiguration(new HistoryTournamentConfig());
+            //builder.ApplyConfiguration(new MatchHistoryConfig());
+            builder.ApplyConfiguration(new MatchConfig());
+            builder.ApplyConfiguration(new PlayerConfig());
         }
-
     }
-
-
-
 }
