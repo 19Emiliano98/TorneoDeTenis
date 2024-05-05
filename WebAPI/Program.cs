@@ -1,6 +1,8 @@
 using Contracts.Middlewares;
 using Contracts.Middlewares.MiddlewaresService;
 using Data.Configuration;
+using Services.Interfaces;
+using Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTournamentDbConfiguration();
 
 builder.Services.AddScoped<IExceptionService, ExceptionService>();
+builder.Services.AddScoped<IPlayerService, PlayerService>();
 
 var app = builder.Build();
 

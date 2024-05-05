@@ -19,6 +19,7 @@ namespace Data.Entities
         public virtual ICollection<Match> PlayerWinner { get; set; }
         public virtual ICollection<Match> PlayerLoser { get; set; }
         public virtual ICollection<HistoryTournament> HistoryTournamentOfPlayer { get; set; }
+
     }
 
     public class PlayerConfig : IEntityTypeConfiguration<Player>
@@ -38,7 +39,7 @@ namespace Data.Entities
             builder.HasMany(x => x.PlayerLoser).WithOne(x => x.MatchLoser);
 
             //builder.HasData(
-            //    new Player()
+            //    new Player
             //    {
             //        Id = 1,
             //        Name = "Facundo Villalobo",
@@ -46,7 +47,7 @@ namespace Data.Entities
             //        Strenght = 80,
             //        Speed = 32
             //    },
-            //    new Player()
+            //    new Player
             //    {
             //        Id = 2,
             //        Name = "Matias Corredera",
@@ -54,7 +55,7 @@ namespace Data.Entities
             //        Strenght = 60,
             //        Speed = 40
             //    },
-            //    new Player()
+            //    new Player
             //    {
             //        Id = 3,
             //        Name = "Lautaro De Simeone",
@@ -62,7 +63,7 @@ namespace Data.Entities
             //        Strenght = 61,
             //        Speed = 39
             //    },
-            //    new Player()
+            //    new Player
             //    {
             //        Id = 4,
             //        Name = "Emiliano Caballero",
@@ -70,7 +71,7 @@ namespace Data.Entities
             //        Strenght = 65,
             //        Speed = 34
             //    },
-            //    new Player()
+            //    new Player
             //    {
             //        Id = 5,
             //        Name = "Carlos Palladino",
@@ -78,7 +79,7 @@ namespace Data.Entities
             //        Strenght = 59,
             //        Speed = 35
             //    },
-            //    new Player()
+            //    new Player
             //    {
             //        Id = 6,
             //        Name = "Gustavo Lucci",
@@ -86,7 +87,7 @@ namespace Data.Entities
             //        Strenght = 69,
             //        Speed = 31
             //    },
-            //    new Player()
+            //    new Player
             //    {
             //        Id = 7,
             //        Name = "Roque Olguin",
@@ -94,7 +95,7 @@ namespace Data.Entities
             //        Strenght = 49,
             //        Speed = 70
             //    },
-            //    new Player()
+            //    new Player
             //    {
             //        Id = 8,
             //        Name = "Joaquin Martinez",
@@ -106,5 +107,4 @@ namespace Data.Entities
 
         }
     }
-
 }
