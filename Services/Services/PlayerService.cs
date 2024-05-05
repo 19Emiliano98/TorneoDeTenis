@@ -1,27 +1,26 @@
-﻿using Data.Entities;
+﻿using Contracts.Mappers;
+using Data.Entities;
 using Data.Repository;
+using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Services
 {
     public class PlayerService : IPlayerService
     {
-        private readonly TournamentContext _tournamentContext;
+        private readonly TournamentContext _context;
 
         public PlayerService(TournamentContext tournamentContext)
         {
-            _tournamentContext = tournamentContext;
+            _context = tournamentContext;
         }
 
-        public async Task<List<Player>> SetLuckAsync()
+        public async Task<List<PlayerStatsResponse>> SetLuckAsync()
         {
-            var playersList = await _tournamentContext.Set<Player>().ToListAsync();
+            var playersList = await _context.Set<Player>().ToListAsync();
+
+            var playerResponseList = new List<PlayerStatsResponse>();
 
             foreach (var player in playersList)
             {
@@ -29,12 +28,17 @@ namespace Services.Services
 
                 player.Luck = random.Next(0, 101);
 
-                _tournamentContext.Set<Player>().Update(player);
+                _context.Set<Player>().Update(player);
+
+                var playerResponse = player.ToPlayerStatsResponse();
+
+                playerResponseList.Add(playerResponse);
+
             }
 
-            await _tournamentContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-            return playersList;
+            return playerResponseList;
         }
 
     }

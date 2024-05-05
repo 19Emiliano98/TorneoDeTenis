@@ -15,6 +15,7 @@ builder.Services.AddTournamentDbConfiguration();
 
 builder.Services.AddScoped<IExceptionService, ExceptionService>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<IMatchService, MatchService>();
 
 var app = builder.Build();
 
