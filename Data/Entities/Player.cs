@@ -34,6 +34,8 @@ namespace Data.Entities
             builder.HasMany(x => x.PlayerWinner).WithOne(x => x.MatchWinner);
 
             builder.HasMany(x => x.PlayerLoser).WithOne(x => x.MatchLoser);
+
+            builder.HasMany(x => x.HistoryTournamentOfPlayer).WithOne(x => x.IdPlayerForeignKey);
         }
     }
 }

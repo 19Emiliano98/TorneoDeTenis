@@ -69,24 +69,40 @@ namespace Services.Services
 
             if (habilityPlayerOne > habilityPlayerTwo)
             {
+                matchNewData.IdHistoryMatch = await SeekTournamentIdAsync();
                 matchNewData.IdWinner = playerOne.Id;
                 matchNewData.IdLoser = playerTwo.Id;
-                //matchNewData.IdHistoryMatch = ;
-                //_context.Set<Match>().Add(matchNewData);
 
-                //await _context.SaveChangesAsync();
+                _context.Set<Match>().Add(matchNewData);
+
+                await _context.SaveChangesAsync();
 
                 return playerOne;
             }
 
+            matchNewData.IdHistoryMatch = await SeekTournamentIdAsync();
             matchNewData.IdWinner = playerTwo.Id;
             matchNewData.IdLoser = playerOne.Id;
-            //matchNewData.IdHistoryMatch = ;
-            //_context.Set<Match>().Add(matchNewData);
 
-            //await _context.SaveChangesAsync();
+            _context.Set<Match>().Add(matchNewData);
+
+            await _context.SaveChangesAsync();
 
             return playerTwo;
+        }
+
+        private async Task<int> SeekTournamentIdAsync()
+        {
+            var lastTournament = await _context.Set<HistoryTournament>()
+                                                .OrderByDescending(x => x.Id) // Ordenar por fecha de registro (o cualquier otro criterio)
+                                                .FirstOrDefaultAsync();
+
+            if (lastTournament == null)
+            {
+                return 1;
+            }
+
+            return lastTournament.Id;
         }
     }
 }
