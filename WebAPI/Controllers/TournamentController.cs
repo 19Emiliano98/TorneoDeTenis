@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
             _matchService = matchService;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> CreateTournament()
         {
             var playersList = await _playerService.SetLuckAsync();
