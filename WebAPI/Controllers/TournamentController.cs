@@ -17,8 +17,9 @@ namespace WebAPI.Controllers
             _playerService = playerService;
             _matchService = matchService;
         }
+        
         // Posteamos un Torneo / partido 
-        [HttpPost]
+        //[HttpPost]
 
         // En proceso
         //public async Task<IActionResult> CreateTournament([FromBody]  )
@@ -31,17 +32,15 @@ namespace WebAPI.Controllers
 
 
         [HttpGet]
-
-
         /// traemos a los ganadores de los partidos
         public async Task<IActionResult> GetFirtMatchesWinner()
         {
             var playersList = await _playerService.SetLuckAsync();
 
-            await _matchService.InitMatchAsync(playersList);
+            var response = await _matchService.InitMatchAsync(playersList);
 
 
-            return Ok("Ok");
+            return Ok(response);
         }
 
 

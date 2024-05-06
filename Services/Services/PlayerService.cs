@@ -18,23 +18,23 @@ namespace Services.Services
         }
         // a probar metodo ( ya listamos dos veces lo mismo )
 
-        public async Task<List<Player>> GetPlayersAsync()
-        {
-            var playersList = await _context.Set<Player>().ToListAsync();
+        //public async Task<List<Player>> GetPlayersAsync()
+        //{
+        //    var playersList = await _context.Set<Player>().ToListAsync();
 
-            return playersList;
-        }
+        //    return playersList;
+        //}
 
 
 
         // se podria setear directamente la suerte acá   en el metodo  
         public async Task<List<PlayerStatsResponse>> SetLuckAsync()
         {
-            //var playersList = await _context.Set<Player>().ToListAsync();
-            var playerList = await GetPlayersAsync();
+            var playersList = await _context.Set<Player>().ToListAsync();
+            //var playerList = await GetPlayersAsync();
             var playerResponseList = new List<PlayerStatsResponse>();
 
-            foreach (var player in playerList)
+            foreach (var player in playersList)
             {
                 var random = new Random();
 
