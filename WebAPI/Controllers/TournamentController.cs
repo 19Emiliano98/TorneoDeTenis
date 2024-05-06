@@ -4,7 +4,7 @@ using Services.Services;
 
 namespace WebAPI.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
     public class TournamentController : Controller
@@ -17,17 +17,34 @@ namespace WebAPI.Controllers
             _playerService = playerService;
             _matchService = matchService;
         }
+        // Posteamos un Torneo / partido 
+        [HttpPost]
+
+        // En proceso
+        //public async Task<IActionResult> CreateTournament([FromBody]  )
+        //{
+           
+
+        //        return Ok("Player created Succesfully");
+        //}
+
+
 
         [HttpGet]
-        public async Task<IActionResult> CreateTournament()
+
+
+        /// traemos a los ganadores de los partidos
+        public async Task<IActionResult> GetFirtMatchesWinner()
         {
             var playersList = await _playerService.SetLuckAsync();
-            
+
             await _matchService.InitMatchAsync(playersList);
-            
+
 
             return Ok("Ok");
         }
+
+
 
     }
 }
