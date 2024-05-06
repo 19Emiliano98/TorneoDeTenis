@@ -11,7 +11,6 @@ namespace WebAPI.Controllers
     {
         private readonly IPlayerService _playerService;
         private readonly IMatchService _matchService;
-        private readonly IMatchHistoryService _matchHistoryService;
 
         public TournamentController(IPlayerService playerService, IMatchService matchService)
         {
@@ -25,8 +24,6 @@ namespace WebAPI.Controllers
             var playersList = await _playerService.SetLuckAsync();
             
             var champion = await _matchService.InitMatchAsync(playersList);
-            
-            await _matchHistoryService.SaveMatchOnTournamentAsync(champion);
 
             return Ok(champion);
         }
