@@ -25,13 +25,12 @@ namespace Services.Services
         //    return playersList;
         //}
 
-
-
-        // se podria setear directamente la suerte acá   en el metodo  
         public async Task<List<PlayerStatsResponse>> SetLuckAsync()
         {
             var playersList = await _context.Set<Player>().ToListAsync();
+            
             //var playerList = await GetPlayersAsync();
+            
             var playerResponseList = new List<PlayerStatsResponse>();
 
             foreach (var player in playersList)

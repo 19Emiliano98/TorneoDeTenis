@@ -23,10 +23,9 @@ namespace WebAPI.Controllers
         {
             var playersList = await _playerService.SetLuckAsync();
             
-            await _matchService.InitMatchAsync(playersList);
+            var response = await _matchService.InitMatchAsync(playersList);
             
-
-            return Ok("Ok");
+            return Ok(response);
         }
 
     }

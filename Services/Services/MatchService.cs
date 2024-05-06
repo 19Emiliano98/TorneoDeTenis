@@ -49,9 +49,6 @@ namespace Services.Services
                 playerList.RemoveAt(indiceJugador2);
 
                 var winnerOfMatch = await MatchGame(jugador1, jugador2);
-                
-                // le resto -10 a todo habilidad
-                //winnerOfMatch = RestHabilitie(winnerOfMatch);
 
                 listResults.Add(winnerOfMatch);
 
@@ -69,9 +66,7 @@ namespace Services.Services
 
             return listResults;
         }
-
-        // Este metodo  es interesante par usarlo de Gral para  todo el torneo 
-        // se poddria  hacer diferente las habilidades y utilizarla según partido
+        
         private async Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo)
         {
             //var habilityPlayerOne = playerOne.Strenght + playerOne.Speed + playerOne.Luck;
@@ -95,9 +90,9 @@ namespace Services.Services
                 matchNewData.IdWinner = playerOne.Id;
                 matchNewData.IdLoser = playerTwo.Id;
 
-                _context.Set<Match>().Add(matchNewData);
+                //_context.Set<Match>().Add(matchNewData);
 
-                await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
 
                 return playerOne;
             }
@@ -105,9 +100,9 @@ namespace Services.Services
             matchNewData.IdWinner = playerTwo.Id;
             matchNewData.IdLoser = playerOne.Id;
 
-            _context.Set<Match>().Add(matchNewData);
+            //_context.Set<Match>().Add(matchNewData);
 
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
 
             return playerTwo;
         }
