@@ -6,6 +6,7 @@ using Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,15 +22,24 @@ namespace Services.Services
             _context = context;
         }
 
-        public async Task InitMatchAsync(List<PlayerStatsResponse> playerList)
+        //public PlayerStatsResponse RestHabilitie(PlayerStatsResponse playerHabilitesRest)
+        //{
+        //    playerHabilitesRest.Strenght -= 10;
+        //    playerHabilitesRest.Speed -= 10;
+        //    //playerHabilitesRest.Luck -= 10;
+
+        //    return playerHabilitesRest;
+        //}
+
+        public async Task<List<PlayerStatsResponse>> InitMatchAsync(List<PlayerStatsResponse> playerList)
         {
-            
             var listResults = new List<PlayerStatsResponse>();
 
             Random rnd = new Random();
 
             while (playerList.Count != 0)
             {
+                
                 var indiceJugador1 = rnd.Next(0, playerList.Count);
                 var jugador1 = playerList[indiceJugador1];
                 playerList.RemoveAt(indiceJugador1);
@@ -39,15 +49,36 @@ namespace Services.Services
                 playerList.RemoveAt(indiceJugador2);
 
                 var winnerOfMatch = await MatchGame(jugador1, jugador2);
+                
+                // le resto -10 a todo habilidad
+                //winnerOfMatch = RestHabilitie(winnerOfMatch);
 
-                //listResults.Add(winnerOfMatch);
+                listResults.Add(winnerOfMatch);
+
+                if( playerList.Count == 0 && listResults.Count > 1)
+                {
+                    foreach( var player in listResults )
+                    {
+                        playerList.Add(player);
+                    }
+
+                    listResults.Clear();
+                }
+
             }
-    }
 
+            return listResults;
+        }
+
+        // Este metodo  es interesante par usarlo de Gral para  todo el torneo 
+        // se poddria  hacer diferente las habilidades y utilizarla según partido
         private async Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo)
         {
-            var habilityPlayerOne = (playerOne.Strenght * playerOne.Speed) + playerOne.Luck;
-            var habilityPlayerTwo = (playerTwo.Strenght * playerTwo.Speed) + playerOne.Luck;
+            //var habilityPlayerOne = playerOne.Strenght + playerOne.Speed + playerOne.Luck;
+            //var habilityPlayerTwo = playerTwo.Strenght + playerTwo.Speed + playerOne.Luck;
+
+            var habilityPlayerOne = 10 + 10 + playerOne.Luck;
+            var habilityPlayerTwo = 10 + 10 + playerOne.Luck;
 
             while (habilityPlayerOne.Equals(habilityPlayerTwo))
             {
@@ -80,5 +111,43 @@ namespace Services.Services
 
             return playerTwo;
         }
+
+        //public async Task<List<PlayerStatsResponse>> QuarterMatches(List<PlayerStatsResponse> playerList)
+        //{
+        //    // Traer a los ganadores previos 
+        //    var previousWinners = await InitMatchAsync(playerList);
+
+        //    // Realizar una nueva ronda de partidos con los ganadores
+        //    var quarterFinalWinners = await InitMatchAsync(previousWinners);
+
+        //    // Aquí puedes hacer algo con los ganadores de los cuartos de final
+
+        //    return quarterFinalWinners;
+        //}
+
+
+        //public async Task<List<PlayerStatsResponse>> SemiFinalMatches(List<PlayerStatsResponse> playerList)
+        //{
+        //    var previousWinners = await QuarterMatches(playerList);
+
+        //// Realizar una nueva ronda de partidos con los ganadores
+        //var SemiFinalWinners = await InitMatchAsync(previousWinners);
+
+        //    // Aquí puedes hacer algo con los ganadores de los cuartos de final
+
+        //    return SemiFinalWinners;
+        //}
+
+        //public async Task<List<PlayerStatsResponse>> FinalMatche(List<PlayerStatsResponse> playerList)
+        //{
+        //    var previousWinners = await SemiFinalMatches(playerList);
+
+        //    // Realizar una nueva ronda de partidos con los ganadores
+        //    var FinalMatche = await InitMatchAsync(previousWinners);
+
+        //    // Aquí puedes hacer algo con los ganadores de los cuartos de final
+        //    return FinalMatche;
+        //}
     }
 }
+

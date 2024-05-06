@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DTO.Responses
+namespace Contracts.DTO.Requests
 {
-    public class PlayerStatsResponse
+    public class PlayerMatchRequest
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public int Luck { get; set; }
         public int Strenght { get; set; }
         public int Speed { get; set; }
     }
-
-
 }

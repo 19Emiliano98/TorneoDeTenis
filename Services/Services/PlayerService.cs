@@ -1,4 +1,5 @@
-﻿using Contracts.Mappers;
+﻿using Contracts.DTO.Responses;
+using Contracts.Mappers;
 using Data.Entities;
 using Data.Repository;
 using DTO.Responses;
@@ -15,11 +16,22 @@ namespace Services.Services
         {
             _context = tournamentContext;
         }
+        // a probar metodo ( ya listamos dos veces lo mismo )
 
+        //public async Task<List<Player>> GetPlayersAsync()
+        //{
+        //    var playersList = await _context.Set<Player>().ToListAsync();
+
+        //    return playersList;
+        //}
+
+
+
+        // se podria setear directamente la suerte acá   en el metodo  
         public async Task<List<PlayerStatsResponse>> SetLuckAsync()
         {
             var playersList = await _context.Set<Player>().ToListAsync();
-
+            //var playerList = await GetPlayersAsync();
             var playerResponseList = new List<PlayerStatsResponse>();
 
             foreach (var player in playersList)
@@ -41,5 +53,6 @@ namespace Services.Services
             return playerResponseList;
         }
 
+ 
     }
 }
