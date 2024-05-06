@@ -3,12 +3,6 @@ using Data.Repository;
 using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Services
 {
@@ -22,16 +16,7 @@ namespace Services.Services
             _context = context;
         }
 
-        //public PlayerStatsResponse RestHabilitie(PlayerStatsResponse playerHabilitesRest)
-        //{
-        //    playerHabilitesRest.Strenght -= 10;
-        //    playerHabilitesRest.Speed -= 10;
-        //    //playerHabilitesRest.Luck -= 10;
-
-        //    return playerHabilitesRest;
-        //}
-
-        public async Task<List<PlayerStatsResponse>> InitMatchAsync(List<PlayerStatsResponse> playerList)
+        public async Task<PlayerStatsResponse> InitMatchAsync(List<PlayerStatsResponse> playerList)
         {
             var listResults = new List<PlayerStatsResponse>();
 
@@ -64,14 +49,11 @@ namespace Services.Services
 
             }
 
-            return listResults;
+            return listResults[0];
         }
         
         private async Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo)
         {
-            //var habilityPlayerOne = playerOne.Strenght + playerOne.Speed + playerOne.Luck;
-            //var habilityPlayerTwo = playerTwo.Strenght + playerTwo.Speed + playerOne.Luck;
-
             var habilityPlayerOne = 10 + 10 + playerOne.Luck;
             var habilityPlayerTwo = 10 + 10 + playerOne.Luck;
 
@@ -89,7 +71,7 @@ namespace Services.Services
             {
                 matchNewData.IdWinner = playerOne.Id;
                 matchNewData.IdLoser = playerTwo.Id;
-
+                //matchNewData.IdHistoryMatch = ;
                 //_context.Set<Match>().Add(matchNewData);
 
                 //await _context.SaveChangesAsync();
@@ -99,50 +81,13 @@ namespace Services.Services
 
             matchNewData.IdWinner = playerTwo.Id;
             matchNewData.IdLoser = playerOne.Id;
-
+            //matchNewData.IdHistoryMatch = ;
             //_context.Set<Match>().Add(matchNewData);
 
             //await _context.SaveChangesAsync();
 
             return playerTwo;
         }
-
-        //public async Task<List<PlayerStatsResponse>> QuarterMatches(List<PlayerStatsResponse> playerList)
-        //{
-        //    // Traer a los ganadores previos 
-        //    var previousWinners = await InitMatchAsync(playerList);
-
-        //    // Realizar una nueva ronda de partidos con los ganadores
-        //    var quarterFinalWinners = await InitMatchAsync(previousWinners);
-
-        //    // Aquí puedes hacer algo con los ganadores de los cuartos de final
-
-        //    return quarterFinalWinners;
-        //}
-
-
-        //public async Task<List<PlayerStatsResponse>> SemiFinalMatches(List<PlayerStatsResponse> playerList)
-        //{
-        //    var previousWinners = await QuarterMatches(playerList);
-
-        //// Realizar una nueva ronda de partidos con los ganadores
-        //var SemiFinalWinners = await InitMatchAsync(previousWinners);
-
-        //    // Aquí puedes hacer algo con los ganadores de los cuartos de final
-
-        //    return SemiFinalWinners;
-        //}
-
-        //public async Task<List<PlayerStatsResponse>> FinalMatche(List<PlayerStatsResponse> playerList)
-        //{
-        //    var previousWinners = await SemiFinalMatches(playerList);
-
-        //    // Realizar una nueva ronda de partidos con los ganadores
-        //    var FinalMatche = await InitMatchAsync(previousWinners);
-
-        //    // Aquí puedes hacer algo con los ganadores de los cuartos de final
-        //    return FinalMatche;
-        //}
     }
 }
 

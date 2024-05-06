@@ -11,12 +11,13 @@ namespace Data.Entities
     public class Match
     {
         public int Id { get; set; }
+        public int IdHistoryMatch { get; set; }
         public int? IdWinner { get; set; }
         public int? IdLoser { get; set; }
 
         public virtual Player MatchWinner { get; set; }
         public virtual Player MatchLoser { get; set; }
-        public virtual ICollection<MatchHistory> MatchHistoryCollection { get; set; }
+        public virtual ICollection<HistoryTournament> HistoryMatch { get; set; }
     }
 
     public class MatchConfig : IEntityTypeConfiguration<Match>
@@ -26,6 +27,7 @@ namespace Data.Entities
             builder.ToTable("Match");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).HasColumnName("Id").ValueGeneratedOnAdd().IsRequired();
+            builder.Property(x => x.IdHistoryMatch).HasColumnName("IdHistoryMatch").IsRequired();
             builder.Property(x => x.IdWinner).HasColumnName("IdWinner").IsRequired();
             builder.Property(x => x.IdLoser).HasColumnName("IdLoser").IsRequired();
 
@@ -41,7 +43,7 @@ namespace Data.Entities
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Match_Loser");
 
-            builder.HasMany(x => x.MatchHistoryCollection).WithOne(x => x.MatchHistoryList);
+            builder.HasMany(x => x.HistoryMatch).WithOne(x => x.HistoryMatchForeignKey);
         }
     }
 }

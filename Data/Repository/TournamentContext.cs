@@ -27,8 +27,7 @@ namespace Data.Repository
 
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            //builder.ApplyConfiguration(new HistoryTournamentConfig());
-            //builder.ApplyConfiguration(new MatchHistoryConfig());
+            builder.ApplyConfiguration(new HistoryTournamentConfig());
             builder.ApplyConfiguration(new MatchConfig());
             builder.ApplyConfiguration(new PlayerConfig());
         }

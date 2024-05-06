@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Entities
 {
@@ -17,7 +12,7 @@ namespace Data.Entities
         public DateTime Date { get; set; }
 
         public virtual Player IdPlayerForeignKey { get; set; }
-        public virtual MatchHistory MatchHistoryForeignKey { get; set; }
+        public virtual Match HistoryMatchForeignKey { get; set; }
     }
 
     public class HistoryTournamentConfig : IEntityTypeConfiguration<HistoryTournament>
@@ -37,10 +32,10 @@ namespace Data.Entities
                     .HasForeignKey(x => x.IdPlayer)
                     .HasConstraintName("FK_HistoryTournament_Player");
 
-            builder.HasOne(a => a.MatchHistoryForeignKey)
-                    .WithMany(a => a.HistoryTournamentOfMatchHistory)
+            builder.HasOne(a => a.HistoryMatchForeignKey)
+                    .WithMany(a => a.HistoryMatch)
                     .HasForeignKey(x => x.IdHistoryMatch)
-                    .HasConstraintName("FK_HistoryTournament_MatchHistory");
+                    .HasConstraintName("FK_HistoryTournament_Match");
 
         }
     }

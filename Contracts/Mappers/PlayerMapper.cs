@@ -24,18 +24,15 @@ namespace Contracts.Mappers
             };
         }
 
-        public static PlayerMatchesResponse ToPlayerMatchesResponse(this Player data)
-        {
-            return new PlayerMatchesResponse()
-            {
-                Luck = data.Luck,
-                Name = data.Name,
-                Strenght = data.Strenght,
-                Speed = data.Speed
-            };
-        }
-
-
-
+        //public static PlayerMatchesResponse ToPlayerMatchesResponse(this Player data)
+        //{
+        //    return new PlayerMatchesResponse()
+        //    {
+        //        Luck = data.Luck,
+        //        Name = data.Name,
+        //        Strenght = data.Strenght,
+        //        Speed = data.Speed
+        //    };
+        //}
     }
 }

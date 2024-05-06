@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class PrimeraMigracion : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,8 @@ namespace Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(26)", maxLength: 26, nullable: false),
-                    Luck = table.Column<int>(type: "int", nullable: false),
+                    Luck = table.Column<int>(type: "int", nullable: true),
+                    Hability = table.Column<int>(type: "int", nullable: false),
                     Strenght = table.Column<int>(type: "int", nullable: false),
                     Speed = table.Column<int>(type: "int", nullable: false)
                 },
@@ -33,6 +34,7 @@ namespace Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IdHistoryMatch = table.Column<int>(type: "int", nullable: false),
                     IdWinner = table.Column<int>(type: "int", nullable: false),
                     IdLoser = table.Column<int>(type: "int", nullable: false)
                 },
@@ -52,26 +54,6 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MatchHistory",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdTournament = table.Column<int>(type: "int", nullable: false),
-                    IdMatch = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MatchHistory", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MatchHistory_Match",
-                        column: x => x.IdMatch,
-                        principalTable: "Match",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "HistoryTournament",
                 columns: table => new
                 {
@@ -86,9 +68,9 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_HistoryTournament", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HistoryTournament_MatchHistory",
+                        name: "FK_HistoryTournament_Match",
                         column: x => x.IdHistoryMatch,
-                        principalTable: "MatchHistory",
+                        principalTable: "Match",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -118,11 +100,6 @@ namespace Data.Migrations
                 name: "IX_Match_IdWinner",
                 table: "Match",
                 column: "IdWinner");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MatchHistory_IdMatch",
-                table: "MatchHistory",
-                column: "IdMatch");
         }
 
         /// <inheritdoc />
@@ -130,9 +107,6 @@ namespace Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "HistoryTournament");
-
-            migrationBuilder.DropTable(
-                name: "MatchHistory");
 
             migrationBuilder.DropTable(
                 name: "Match");
