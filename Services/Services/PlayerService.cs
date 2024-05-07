@@ -21,16 +21,7 @@ namespace Services.Services
 
         }
 
-        //public async Task<List<Player>> GetPlayersAsync()
-        //{
-        //    var playersList = await _context.Set<Player>().ToListAsync();
-
-        //    return playersList;
-        //}
-
-
-
-
+    
         public async Task<List<PlayerStatsResponse>> SetLuckAsync()
         {
             var playersList = await _context.Set<Player>().ToListAsync();
@@ -47,7 +38,6 @@ namespace Services.Services
                 // tiro un nro random 0 u 1 
                 // si es dos se sumaria la la luck 
               
-
                 _context.Set<Player>().Update(player);
 
                 var playerResponse = player.ToPlayerStatsResponse();

@@ -15,7 +15,6 @@ namespace Data.Entities
         public int Luck { get; set; }
         public int Strenght { get; set; }
         public int Speed { get; set; }
-
         public int Hability { get; set; }
         public virtual ICollection<Match> PlayerWinner { get; set; }
         public virtual ICollection<Match> PlayerLoser { get; set; }
@@ -34,6 +33,7 @@ namespace Data.Entities
             builder.Property(x => x.Luck).HasColumnName("Luck").IsRequired();
             builder.Property(x => x.Strenght).HasColumnName("Strenght").IsRequired();
             builder.Property(x => x.Speed).HasColumnName("Speed").IsRequired();
+            builder.Property(x => x.Hability).HasColumnName("Hability").IsRequired();
 
             builder.HasMany(x => x.PlayerWinner).WithOne(x => x.MatchWinner);
 

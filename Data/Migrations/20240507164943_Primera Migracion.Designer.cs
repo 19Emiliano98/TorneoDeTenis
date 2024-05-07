@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    [Migration("20240505020837_Primera Migracion")]
+    [Migration("20240507164943_Primera Migracion")]
     partial class PrimeraMigracion
     {
         /// <inheritdoc />
@@ -120,6 +120,10 @@ namespace Data.Migrations
                         .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Hability")
+                        .HasColumnType("int")
+                        .HasColumnName("Hability");
 
                     b.Property<int>("Luck")
                         .HasColumnType("int")

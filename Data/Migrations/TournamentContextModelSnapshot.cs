@@ -118,6 +118,10 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Hability")
+                        .HasColumnType("int")
+                        .HasColumnName("Hability");
+
                     b.Property<int>("Luck")
                         .HasColumnType("int")
                         .HasColumnName("Luck");

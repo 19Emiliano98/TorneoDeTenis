@@ -17,6 +17,7 @@ CREATE TABLE [Player] (
     [Luck] int NOT NULL,
     [Strenght] int NOT NULL,
     [Speed] int NOT NULL,
+    [Hability] int NOT NULL,
     CONSTRAINT [PK_Player] PRIMARY KEY ([Id])
 );
 GO
@@ -68,8 +69,9 @@ CREATE INDEX [IX_MatchHistory_IdMatch] ON [MatchHistory] ([IdMatch]);
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20240505020837_Primera Migracion', N'8.0.4');
+VALUES (N'20240507164943_Primera Migracion', N'8.0.4');
 GO
 
 COMMIT;
 GO
+

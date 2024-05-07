@@ -19,5 +19,35 @@ namespace Contracts.Middlewares.MiddlewaresService
 
             await context.Response.Body.WriteAsync(Encoding.UTF8.GetBytes(error));
         }
+
+        public async Task GetLoopExceptionResponseAsync(HttpContext context, BadRequestException loopException)
+        {
+            context.Response.ContentType = context.Response.ContentType == null ?
+                    "application/problem+json" :
+                    context.Response.ContentType + ";application/problem+json";
+
+            context.Response.StatusCode = (int)HttpStatusCode.LoopDetected;
+
+            var error = loopException.GetJsonDescription();
+
+            await context.Response.Body.WriteAsync(Encoding.UTF8.GetBytes(error));
+        }
+
+
+
+
+
+        public async Task GetNotFoundExceptionResponseAsync(HttpContext context, BadRequestException notFoundRequestException)
+        {
+            context.Response.ContentType = context.Response.ContentType == null ?
+                        "application/problem+json" :
+                        context.Response.ContentType + ";application/problem+json";
+
+            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+
+            var error = notFoundRequestException.GetJsonDescription();
+
+            await context.Response.Body.WriteAsync(Encoding.UTF8.GetBytes(error));
+        }
     }
 }

@@ -15,38 +15,23 @@ namespace Services.Services
 {
     public class MatchService : IMatchService
     {
-
+        // lista de ganadores 
         private readonly TournamentContext _context;
 
         public MatchService(TournamentContext context)
         {
             _context = context;
         }
-
-        //public PlayerStatsResponse RestHabilitie(PlayerStatsResponse playerHabilitesRest)
-        //{
-        //    playerHabilitesRest.Strenght -= 10;
-        //    playerHabilitesRest.Speed -= 10;
-        //    //playerHabilitesRest.Luck -= 10;
-
-        //    return playerHabilitesRest;
-        //}
-
+        private List<PlayerStatsResponse> matchResult;
         public async Task<List<PlayerStatsResponse>> InitMatchAsync(List<PlayerStatsResponse> playerList)
         {
             var listResults = new List<PlayerStatsResponse>();
 
             Random rnd = new Random();
 
-
-            ///  si entran 12 jugadores o 16 o mas se va a controlar en este ciclo
-            ///  el bucle while me da jugadores1 y 2 siempre que la lista sea distinta de 0 
-            ///  devolviendo una lista de ganadores 
-
-
             while (playerList.Count != 0)
             {
-                
+
                 var indiceJugador1 = rnd.Next(0, playerList.Count);
                 var jugador1 = playerList[indiceJugador1];
                 playerList.RemoveAt(indiceJugador1);
@@ -56,15 +41,13 @@ namespace Services.Services
                 playerList.RemoveAt(indiceJugador2);
 
                 var winnerOfMatch = await MatchGame(jugador1, jugador2);
-                
-                // le resto -10 a todo habilidad
-                //winnerOfMatch = RestHabilitie(winnerOfMatch);
+                //listResults.Add(player);
 
                 listResults.Add(winnerOfMatch);
 
-                if( playerList.Count == 0 && listResults.Count > 1)
+                if (playerList.Count == 0 && listResults.Count > 1)
                 {
-                    foreach( var player in listResults )
+                    foreach (var player in listResults)
                     {
                         playerList.Add(player);
                     }
@@ -75,18 +58,22 @@ namespace Services.Services
             }
 
             return listResults;
+
+
         }
 
-        // Este metodo  es interesante par usarlo de Gral para  todo el torneo 
-        // se poddria  hacer diferente las habilidades y utilizarla según partido
-        private async Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo)
+
+        public async Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo)
         {
             var habilityPlayerOne = (playerOne.Strenght, playerOne.Speed, playerOne.Luck, playerOne.Hability);
             var habilityPlayerTwo = (playerTwo.Strenght, playerTwo.Speed, playerOne.Luck, playerTwo.Hability);
             var random = new Random();
 
+
             int habilityTotalPlayerOne = 0;
             int habilityTotalPlayerTwo = 0;
+
+
             while (habilityPlayerOne.Equals(habilityPlayerTwo))
             {
 
@@ -112,6 +99,7 @@ namespace Services.Services
                     playerOne.Hability -= playerOne.Luck;
                     playerTwo.Hability += playerTwo.Luck;
                 }
+                // verificar si almacena los datos menos la suerte 
                 habilityTotalPlayerOne = (playerOne.Strenght + playerOne.Speed + playerOne.Luck + playerOne.Hability);
                 habilityTotalPlayerTwo = (playerTwo.Strenght + playerTwo.Speed + playerTwo.Luck + playerTwo.Hability);
             }
@@ -128,7 +116,8 @@ namespace Services.Services
                 _context.Set<Match>().Add(matchNewData);
 
                 await _context.SaveChangesAsync();
-
+                // almaceno a los ganadores
+                matchResult.Add(playerOne);
                 return playerOne;
             }
 
@@ -138,12 +127,9 @@ namespace Services.Services
             _context.Set<Match>().Add(matchNewData);
 
             await _context.SaveChangesAsync();
-
+            matchResult.Add(playerTwo);
             return playerTwo;
         }
-
-
-
     }
 }
 

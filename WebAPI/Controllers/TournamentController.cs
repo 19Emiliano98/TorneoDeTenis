@@ -30,7 +30,9 @@ namespace WebAPI.Controllers
 
             var response = await _matchService.InitMatchAsync(playersList);
 
-
+            // acá listaria a los ganador previos 
+            // matchgame o matchInitial a definir
+                
             return Ok(response);
         }
 

@@ -20,7 +20,8 @@ namespace Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(26)", maxLength: 26, nullable: false),
                     Luck = table.Column<int>(type: "int", nullable: false),
                     Strenght = table.Column<int>(type: "int", nullable: false),
-                    Speed = table.Column<int>(type: "int", nullable: false)
+                    Speed = table.Column<int>(type: "int", nullable: false),
+                    Hability = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
