@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Contracts.DTO.Responses
 {
-    public  class PlayerMatchesResponse
+    public class PlayerMatchesResponse
     {
         // la idea de esta response es generar un bingo de jugadores para el torneo 
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Luck { get; set; }
+        public int Strenght { get; set; }
+        public int Speed { get; set; }
+        public int Hability { get; set; }
 
-     
-            public string Name { get; set; }
-            public int Luck { get; set; }
-            public int Strenght { get; set; }
-            public int Speed { get; set; }
 
-        
     }
 }

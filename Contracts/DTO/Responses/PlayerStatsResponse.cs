@@ -13,6 +13,8 @@ namespace DTO.Responses
         public int Luck { get; set; }
         public int Strenght { get; set; }
         public int Speed { get; set; }
+        public int Hability { get; set; }
+
     }
 
 

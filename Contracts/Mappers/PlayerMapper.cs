@@ -20,7 +20,8 @@ namespace Contracts.Mappers
                 Name = data.Name,
                 Luck = data.Luck,
                 Strenght = data.Strenght,
-                Speed = data.Speed
+                Speed = data.Speed,
+                Hability = data.Hability
             };
         }
 

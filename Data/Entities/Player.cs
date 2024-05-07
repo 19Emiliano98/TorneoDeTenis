@@ -16,6 +16,7 @@ namespace Data.Entities
         public int Strenght { get; set; }
         public int Speed { get; set; }
 
+        public int Hability { get; set; }
         public virtual ICollection<Match> PlayerWinner { get; set; }
         public virtual ICollection<Match> PlayerLoser { get; set; }
         public virtual ICollection<HistoryTournament> HistoryTournamentOfPlayer { get; set; }

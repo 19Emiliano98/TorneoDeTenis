@@ -11,14 +11,8 @@ namespace Services.Interfaces
     public interface IMatchService
     {
         Task<List<PlayerStatsResponse>> InitMatchAsync(List<PlayerStatsResponse> playerList);
-
         Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo);
-
-        // todos se tieneq ue cambiar a  playerMatchesResponse 
         PlayerStatsResponse RestHabilitie(PlayerStatsResponse playerHabilitesRest);
-        Task<List<PlayerStatsResponse>> QuarterMatches(List<PlayerStatsResponse> playerList);
-        Task<List<PlayerStatsResponse>> SemiFinalMatches(List<PlayerStatsResponse> playerList);
-        Task<List<PlayerStatsResponse>> FinalMatche(List<PlayerStatsResponse> playerList);
-
+     
     }
 }

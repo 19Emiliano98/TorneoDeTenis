@@ -20,15 +20,6 @@ namespace WebAPI.Controllers
         // Posteamos un Torneo / partido 
         [HttpPost]
 
-        // En proceso
-        //public async Task<IActionResult> CreateTournament([FromBody]  )
-        //{
-           
-
-        //        return Ok("Player created Succesfully");
-        //}
-
-
 
         [HttpGet]
 

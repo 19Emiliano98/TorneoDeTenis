@@ -1,4 +1,5 @@
-﻿using Contracts.DTO.Responses;
+﻿using Contracts.DTO.Requests;
+using Contracts.DTO.Responses;
 using Data.Entities;
 using DTO.Responses;
 using System;
@@ -11,12 +12,8 @@ namespace Services.Interfaces
 {
     public interface IPlayerService
     {
-        //List<List<Player> GetPlayers();
+     
         Task<List<PlayerStatsResponse>> SetLuckAsync();
-        // a aplicar
-        //Task<List<PlayerStatsResponse>> SetBadLuckAsync();
-
-
 
     }
 }

@@ -1,9 +1,12 @@
-﻿using Contracts.DTO.Responses;
+﻿using Contracts.DTO.Requests;
+using Contracts.DTO.Responses;
+using Contracts.Exceptions;
 using Contracts.Mappers;
 using Data.Entities;
 using Data.Repository;
 using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Services.Interfaces;
 
 namespace Services.Services
@@ -15,8 +18,8 @@ namespace Services.Services
         public PlayerService(TournamentContext tournamentContext)
         {
             _context = tournamentContext;
+
         }
-        // a probar metodo ( ya listamos dos veces lo mismo )
 
         public async Task<List<Player>> GetPlayersAsync()
         {
@@ -27,18 +30,23 @@ namespace Services.Services
 
 
 
-        // se podria setear directamente la suerte acá   en el metodo  
+
         public async Task<List<PlayerStatsResponse>> SetLuckAsync()
         {
             //var playersList = await _context.Set<Player>().ToListAsync();
             var playerList = await GetPlayersAsync();
             var playerResponseList = new List<PlayerStatsResponse>();
+            var random = new Random();
 
             foreach (var player in playerList)
             {
-                var random = new Random();
 
                 player.Luck = random.Next(0, 101);
+                //player.Luck = random.Next(20, 30);
+
+                // tiro un nro random 0 u 1 
+                // si es dos se sumaria la la luck 
+              
 
                 _context.Set<Player>().Update(player);
 
@@ -53,6 +61,6 @@ namespace Services.Services
             return playerResponseList;
         }
 
- 
+
     }
 }
