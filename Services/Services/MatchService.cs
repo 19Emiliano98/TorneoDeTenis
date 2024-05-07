@@ -23,19 +23,17 @@ namespace Services.Services
             _context = context;
         }
 
+        //public PlayerStatsResponse RestHabilitie(PlayerStatsResponse playerHabilitesRest)
+        //{
+        //    playerHabilitesRest.Strenght -= 10;
+        //    playerHabilitesRest.Speed -= 10;
+        //    //playerHabilitesRest.Luck -= 10;
 
+        //    return playerHabilitesRest;
+        //}
 
-        public PlayerStatsResponse RestHabilitie(PlayerStatsResponse playerHabilitesRest)
-        {
-            playerHabilitesRest.Strenght -= 10;
-            playerHabilitesRest.Speed -= 10;
-            //playerHabilitesRest.Luck -= 10;
-
-            return playerHabilitesRest;
-        }
         public async Task<List<PlayerStatsResponse>> InitMatchAsync(List<PlayerStatsResponse> playerList)
         {
-
             var listResults = new List<PlayerStatsResponse>();
 
             Random rnd = new Random();
@@ -48,6 +46,7 @@ namespace Services.Services
 
             while (playerList.Count != 0)
             {
+                
                 var indiceJugador1 = rnd.Next(0, playerList.Count);
                 var jugador1 = playerList[indiceJugador1];
                 playerList.RemoveAt(indiceJugador1);
@@ -57,18 +56,30 @@ namespace Services.Services
                 playerList.RemoveAt(indiceJugador2);
 
                 var winnerOfMatch = await MatchGame(jugador1, jugador2);
+                
                 // le resto -10 a todo habilidad
-                winnerOfMatch = RestHabilitie(winnerOfMatch);
+                //winnerOfMatch = RestHabilitie(winnerOfMatch);
 
                 listResults.Add(winnerOfMatch);
 
+                if( playerList.Count == 0 && listResults.Count > 1)
+                {
+                    foreach( var player in listResults )
+                    {
+                        playerList.Add(player);
+                    }
+
+                    listResults.Clear();
+                }
+
             }
+
             return listResults;
         }
 
         // Este metodo  es interesante par usarlo de Gral para  todo el torneo 
         // se poddria  hacer diferente las habilidades y utilizarla según partido
-        public async Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo)
+        private async Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo)
         {
             var habilityPlayerOne = (playerOne.Strenght, playerOne.Speed, playerOne.Luck, playerOne.Hability);
             var habilityPlayerTwo = (playerTwo.Strenght, playerTwo.Speed, playerOne.Luck, playerTwo.Hability);
@@ -117,6 +128,7 @@ namespace Services.Services
                 _context.Set<Match>().Add(matchNewData);
 
                 await _context.SaveChangesAsync();
+
                 return playerOne;
             }
 
