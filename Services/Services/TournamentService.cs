@@ -36,9 +36,8 @@ namespace Services.Services
         public async Task SetChampion(PlayerStatsResponse champeon)
         {
       
-            var lastTournament = await _context.Set<HistoryTournament>()
-                                    .OrderByDescending(t => t.Id) // Ordenar por fecha de registro (o cualquier otro criterio)
-                                    .FirstOrDefaultAsync();
+            var lastTournament = await _context.Set<HistoryTournament>().OrderByDescending(t => t.Id).FirstOrDefaultAsync();
+
             lastTournament.IdPlayer = champeon.Id;
 
             _context.Set<HistoryTournament>().Update(lastTournament);

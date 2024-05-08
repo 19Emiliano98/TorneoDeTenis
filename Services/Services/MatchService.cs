@@ -9,19 +9,14 @@ namespace Services.Services
 {
     public class MatchService : IMatchService
     {
-        // lista de ganadores 
         private readonly TournamentContext _context;
-        // lista rde partidos 
-        private readonly List<Match> matchResults = new List<Match>();
 
         public MatchService(TournamentContext context)
         {
             _context = context;
         }
 
-
         public async Task<PlayerStatsResponse> InitMatchAsync(List<PlayerStatsResponse> playerList)
-
         {
             var listResults = new List<PlayerStatsResponse>();
 
@@ -29,7 +24,6 @@ namespace Services.Services
 
             while (playerList.Count != 0)
             {
-
                 var indiceJugador1 = rnd.Next(0, playerList.Count);
                 var jugador1 = playerList[indiceJugador1];
                 playerList.RemoveAt(indiceJugador1);
@@ -48,68 +42,31 @@ namespace Services.Services
                     {
                         playerList.Add(player);
                     }
+                    
                     listResults.Clear();
                 }
             }
 
-
-
             return listResults[0];
-
         }
 
         public async Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo)
         {
 
-            var habilityPlayerOne = (playerOne.Strenght, playerOne.Speed, playerOne.Luck, playerOne.Hability);
-            var habilityPlayerTwo = (playerTwo.Strenght, playerTwo.Speed, playerOne.Luck, playerTwo.Hability);
-
-            var random = new Random();
-
-            int habilityTotalPlayerOne = 0;
-            int habilityTotalPlayerTwo = 0;
+            var habilityPlayerOne = 10 + 10 + playerOne.Luck;
+            var habilityPlayerTwo = 10 + 10 + playerOne.Luck;
 
             while (habilityPlayerOne.Equals(habilityPlayerTwo))
             {
+                var random = new Random();
 
-                if (random.Next(2) == 0)
-                {
-
-                    playerOne.Strenght += playerOne.Luck ?? 0;
-
-                    playerOne.Luck += playerOne.Hability;
-
-                    playerTwo.Hability -= playerTwo.Luck ?? 0;
-
-                    playerOne.Strenght -= playerOne.Luck ?? 0;
-
-                    playerTwo.Strenght += playerTwo.Luck ?? 0;
-
-                    playerOne.Speed += playerOne.Luck ?? 0;
-
-                    playerTwo.Speed -= playerTwo.Luck ?? 0;
-
-                }
-                else
-                {
-                    playerOne.Strenght += playerOne.Luck ?? 0;
-                    playerTwo.Strenght -= playerTwo.Luck ?? 0;
-
-                    playerOne.Speed -= playerOne.Luck ?? 0;
-                    playerTwo.Speed += playerOne.Luck ?? 0;
-
-                    playerOne.Hability -= playerOne.Luck ?? 0;
-                    playerTwo.Hability += playerTwo.Luck ?? 0;
-                }
-
-
-                habilityTotalPlayerOne = (playerOne.Strenght + playerOne.Speed + playerOne.Hability);
-                habilityTotalPlayerTwo = (playerTwo.Strenght + playerTwo.Speed + playerTwo.Hability);
+                habilityPlayerOne = habilityPlayerOne + random.Next(0, 100);
+                habilityPlayerTwo = habilityPlayerTwo + random.Next(0, 100);
             }
-            // esta bien setear la entidad si tenemos el dto ?
+
             var matchNewData = new Match();
-            //var matchNewData = new PlayerMatchesResponse();
-            if (habilityTotalPlayerOne > habilityTotalPlayerTwo)
+
+            if (habilityPlayerOne > habilityPlayerTwo)
             {
                 matchNewData.IdTournament = await SeekTournamentIdAsync();
                 matchNewData.IdWinner = playerOne.Id;
@@ -118,8 +75,7 @@ namespace Services.Services
                 _context.Set<Match>().Add(matchNewData);
 
                 await _context.SaveChangesAsync();
-                // almaceno a los ganadores
-                matchResults.Add(matchNewData);
+
                 return playerOne;
             }
 
@@ -130,8 +86,6 @@ namespace Services.Services
             _context.Set<Match>().Add(matchNewData);
 
             await _context.SaveChangesAsync();
-
-            matchResults.Add(matchNewData);
 
             return playerTwo;
         }

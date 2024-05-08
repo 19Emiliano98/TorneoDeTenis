@@ -20,26 +20,17 @@ namespace WebAPI.Controllers
             _tournamentService = tournamentService;
         }
 
-
-        [HttpGet]
-        /// traemos a los ganadores de los partidos
-        //public async Task<IActionResult> GetFirtMatchesWinner()
         [HttpPost]
         public async Task<IActionResult> InitTournament()
         {
-            await _tournamentService.CreateTournamentAsync("Copa Carlos");
+            await _tournamentService.CreateTournamentAsync("Copa Emiliano");
 
             var playersList = await _playerService.SetLuckAsync();
             
             var champion = await _matchService.InitMatchAsync(playersList);
 
-
             await _tournamentService.SetChampion(champion);
 
-            // acá listaria a los ganador previos 
-            // matchgame o matchInitial a definir
-                
-            //return Ok(response);
             return Ok(champion);
         }
 

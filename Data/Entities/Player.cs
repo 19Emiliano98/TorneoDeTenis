@@ -29,7 +29,6 @@ namespace Data.Entities
             builder.Property(x => x.Hability).HasColumnName("Hability").IsRequired();
             builder.Property(x => x.Strenght).HasColumnName("Strenght").IsRequired();
             builder.Property(x => x.Speed).HasColumnName("Speed").IsRequired();
-            builder.Property(x => x.Hability).HasColumnName("Hability").IsRequired();
 
             builder.HasMany(x => x.PlayerWinner).WithOne(x => x.MatchWinner);
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    [Migration("20240508000425_Correccion IdPlayer")]
-    partial class CorreccionIdPlayer
+    [Migration("20240508183500_First-Migration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

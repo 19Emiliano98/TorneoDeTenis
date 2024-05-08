@@ -26,16 +26,13 @@ namespace Services.Services
             var playersList = await _context.Set<Player>().ToListAsync();
             
             var playerResponseList = new List<PlayerStatsResponse>();
+            
             var random = new Random();
 
             foreach (var player in playersList)
             {
 
                 player.Luck = random.Next(0, 101);
-                //player.Luck = random.Next(20, 30);
-
-                // tiro un nro random 0 u 1 
-                // si es dos se sumaria la la luck 
               
                 _context.Set<Player>().Update(player);
 
@@ -49,7 +46,5 @@ namespace Services.Services
 
             return playerResponseList;
         }
-
-
     }
 }
