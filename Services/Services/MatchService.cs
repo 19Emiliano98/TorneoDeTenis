@@ -4,12 +4,6 @@ using Data.Repository;
 using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Services
 {
@@ -17,13 +11,17 @@ namespace Services.Services
     {
         // lista de ganadores 
         private readonly TournamentContext _context;
+        // lista rde partidos 
+        private readonly List<Match> matchResults = new List<Match>();
 
         public MatchService(TournamentContext context)
         {
             _context = context;
         }
-        private List<PlayerStatsResponse> matchResult;
-        public async Task<List<PlayerStatsResponse>> InitMatchAsync(List<PlayerStatsResponse> playerList)
+
+
+        public async Task<PlayerStatsResponse> InitMatchAsync(List<PlayerStatsResponse> playerList)
+
         {
             var listResults = new List<PlayerStatsResponse>();
 
@@ -41,7 +39,6 @@ namespace Services.Services
                 playerList.RemoveAt(indiceJugador2);
 
                 var winnerOfMatch = await MatchGame(jugador1, jugador2);
-                //listResults.Add(player);
 
                 listResults.Add(winnerOfMatch);
 
@@ -51,28 +48,26 @@ namespace Services.Services
                     {
                         playerList.Add(player);
                     }
-
                     listResults.Clear();
                 }
-
             }
 
-            return listResults;
 
+
+            return listResults[0];
 
         }
 
-
         public async Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo)
         {
+
             var habilityPlayerOne = (playerOne.Strenght, playerOne.Speed, playerOne.Luck, playerOne.Hability);
             var habilityPlayerTwo = (playerTwo.Strenght, playerTwo.Speed, playerOne.Luck, playerTwo.Hability);
-            var random = new Random();
 
+            var random = new Random();
 
             int habilityTotalPlayerOne = 0;
             int habilityTotalPlayerTwo = 0;
-
 
             while (habilityPlayerOne.Equals(habilityPlayerTwo))
             {
@@ -80,36 +75,43 @@ namespace Services.Services
                 if (random.Next(2) == 0)
                 {
 
-                    playerOne.Hability += playerOne.Luck;
-                    playerTwo.Hability -= playerTwo.Luck;
-                    playerOne.Strenght -= playerOne.Luck;
-                    playerTwo.Strenght += playerTwo.Luck;
-                    playerOne.Speed += playerOne.Luck;
-                    playerTwo.Speed -= playerTwo.Luck;
+                    playerOne.Strenght += playerOne.Luck ?? 0;
+
+                    playerOne.Luck += playerOne.Hability;
+
+                    playerTwo.Hability -= playerTwo.Luck ?? 0;
+
+                    playerOne.Strenght -= playerOne.Luck ?? 0;
+
+                    playerTwo.Strenght += playerTwo.Luck ?? 0;
+
+                    playerOne.Speed += playerOne.Luck ?? 0;
+
+                    playerTwo.Speed -= playerTwo.Luck ?? 0;
 
                 }
                 else
                 {
-                    playerOne.Strenght += playerOne.Luck;
-                    playerTwo.Strenght -= playerTwo.Luck;
+                    playerOne.Strenght += playerOne.Luck ?? 0;
+                    playerTwo.Strenght -= playerTwo.Luck ?? 0;
 
-                    playerOne.Speed -= playerOne.Luck;
-                    playerTwo.Speed += playerOne.Luck;
+                    playerOne.Speed -= playerOne.Luck ?? 0;
+                    playerTwo.Speed += playerOne.Luck ?? 0;
 
-                    playerOne.Hability -= playerOne.Luck;
-                    playerTwo.Hability += playerTwo.Luck;
+                    playerOne.Hability -= playerOne.Luck ?? 0;
+                    playerTwo.Hability += playerTwo.Luck ?? 0;
                 }
-                // verificar si almacena los datos menos la suerte 
-                habilityTotalPlayerOne = (playerOne.Strenght + playerOne.Speed + playerOne.Luck + playerOne.Hability);
-                habilityTotalPlayerTwo = (playerTwo.Strenght + playerTwo.Speed + playerTwo.Luck + playerTwo.Hability);
+
+
+                habilityTotalPlayerOne = (playerOne.Strenght + playerOne.Speed + playerOne.Hability);
+                habilityTotalPlayerTwo = (playerTwo.Strenght + playerTwo.Speed + playerTwo.Hability);
             }
-
-
+            // esta bien setear la entidad si tenemos el dto ?
             var matchNewData = new Match();
-
-
+            //var matchNewData = new PlayerMatchesResponse();
             if (habilityTotalPlayerOne > habilityTotalPlayerTwo)
             {
+                matchNewData.IdTournament = await SeekTournamentIdAsync();
                 matchNewData.IdWinner = playerOne.Id;
                 matchNewData.IdLoser = playerTwo.Id;
 
@@ -117,18 +119,35 @@ namespace Services.Services
 
                 await _context.SaveChangesAsync();
                 // almaceno a los ganadores
-                matchResult.Add(playerOne);
+                matchResults.Add(matchNewData);
                 return playerOne;
             }
 
+            matchNewData.IdTournament = await SeekTournamentIdAsync();
             matchNewData.IdWinner = playerTwo.Id;
             matchNewData.IdLoser = playerOne.Id;
 
             _context.Set<Match>().Add(matchNewData);
 
             await _context.SaveChangesAsync();
-            matchResult.Add(playerTwo);
+
+            matchResults.Add(matchNewData);
+
             return playerTwo;
+        }
+
+        private async Task<int> SeekTournamentIdAsync()
+        {
+            var lastTournament = await _context.Set<HistoryTournament>()
+                                                .OrderByDescending(x => x.Id)
+                                                .FirstOrDefaultAsync();
+
+            if (lastTournament == null)
+            {
+                throw new Exception();
+            }
+
+            return lastTournament.Id;
         }
     }
 }

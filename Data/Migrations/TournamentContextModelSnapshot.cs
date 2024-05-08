@@ -35,11 +35,7 @@ namespace Data.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Date");
 
-                    b.Property<int>("IdHistoryMatch")
-                        .HasColumnType("int")
-                        .HasColumnName("IdHistoryMatch");
-
-                    b.Property<int>("IdPlayer")
+                    b.Property<int?>("IdPlayer")
                         .HasColumnType("int")
                         .HasColumnName("IdPlayer");
 
@@ -49,8 +45,6 @@ namespace Data.Migrations
                         .HasColumnName("Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdHistoryMatch");
 
                     b.HasIndex("IdPlayer");
 
@@ -71,6 +65,10 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("IdLoser");
 
+                    b.Property<int>("IdTournament")
+                        .HasColumnType("int")
+                        .HasColumnName("IdTournament");
+
                     b.Property<int?>("IdWinner")
                         .IsRequired()
                         .HasColumnType("int")
@@ -80,33 +78,11 @@ namespace Data.Migrations
 
                     b.HasIndex("IdLoser");
 
+                    b.HasIndex("IdTournament");
+
                     b.HasIndex("IdWinner");
 
                     b.ToTable("Match", (string)null);
-                });
-
-            modelBuilder.Entity("Data.Entities.MatchHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("IdMatch")
-                        .HasColumnType("int")
-                        .HasColumnName("IdMatch");
-
-                    b.Property<int>("IdTournament")
-                        .HasColumnType("int")
-                        .HasColumnName("IdTournament");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdMatch");
-
-                    b.ToTable("MatchHistory", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.Player", b =>
@@ -122,7 +98,7 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Hability");
 
-                    b.Property<int>("Luck")
+                    b.Property<int?>("Luck")
                         .HasColumnType("int")
                         .HasColumnName("Luck");
 
@@ -147,23 +123,12 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entities.HistoryTournament", b =>
                 {
-                    b.HasOne("Data.Entities.MatchHistory", "MatchHistoryForeignKey")
-                        .WithMany("HistoryTournamentOfMatchHistory")
-                        .HasForeignKey("IdHistoryMatch")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_HistoryTournament_MatchHistory");
-
                     b.HasOne("Data.Entities.Player", "IdPlayerForeignKey")
                         .WithMany("HistoryTournamentOfPlayer")
                         .HasForeignKey("IdPlayer")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("FK_HistoryTournament_Player");
 
                     b.Navigation("IdPlayerForeignKey");
-
-                    b.Navigation("MatchHistoryForeignKey");
                 });
 
             modelBuilder.Entity("Data.Entities.Match", b =>
@@ -174,6 +139,13 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Match_Loser");
 
+                    b.HasOne("Data.Entities.HistoryTournament", "TournamentPlayed")
+                        .WithMany("Matches")
+                        .HasForeignKey("IdTournament")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Match_Tournament");
+
                     b.HasOne("Data.Entities.Player", "MatchWinner")
                         .WithMany("PlayerWinner")
                         .HasForeignKey("IdWinner")
@@ -183,28 +155,13 @@ namespace Data.Migrations
                     b.Navigation("MatchLoser");
 
                     b.Navigation("MatchWinner");
+
+                    b.Navigation("TournamentPlayed");
                 });
 
-            modelBuilder.Entity("Data.Entities.MatchHistory", b =>
+            modelBuilder.Entity("Data.Entities.HistoryTournament", b =>
                 {
-                    b.HasOne("Data.Entities.Match", "MatchHistoryList")
-                        .WithMany("MatchHistoryCollection")
-                        .HasForeignKey("IdMatch")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_MatchHistory_Match");
-
-                    b.Navigation("MatchHistoryList");
-                });
-
-            modelBuilder.Entity("Data.Entities.Match", b =>
-                {
-                    b.Navigation("MatchHistoryCollection");
-                });
-
-            modelBuilder.Entity("Data.Entities.MatchHistory", b =>
-                {
-                    b.Navigation("HistoryTournamentOfMatchHistory");
+                    b.Navigation("Matches");
                 });
 
             modelBuilder.Entity("Data.Entities.Player", b =>

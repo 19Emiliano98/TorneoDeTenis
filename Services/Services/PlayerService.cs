@@ -21,11 +21,10 @@ namespace Services.Services
 
         }
 
-    
         public async Task<List<PlayerStatsResponse>> SetLuckAsync()
         {
             var playersList = await _context.Set<Player>().ToListAsync();
-            //var playerList = await GetPlayersAsync();
+            
             var playerResponseList = new List<PlayerStatsResponse>();
             var random = new Random();
 

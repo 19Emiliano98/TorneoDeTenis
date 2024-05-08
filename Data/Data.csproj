@@ -21,8 +21,4 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\SqlQueries\" />
-  </ItemGroup>
-
 </Project>
