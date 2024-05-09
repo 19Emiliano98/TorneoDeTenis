@@ -8,6 +8,7 @@ using Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Services.Interfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Services.Services
 {
@@ -26,7 +27,12 @@ namespace Services.Services
             var playersList = await _context.Set<Player>()
                                             .Where(x => x.Gender == gender)
                                             .ToListAsync();
-            
+
+            if (!CheckAmountOfPlayers(playersList))
+            {
+                throw new Exception("Los participantes del torneo no son potencia de 2");
+            }
+
             var playerResponseList = new List<PlayerStatsResponse>();
             
             var random = new Random();
@@ -47,6 +53,15 @@ namespace Services.Services
             await _context.SaveChangesAsync();
 
             return playerResponseList;
+        }
+
+        private bool CheckAmountOfPlayers(List<Player> playersList)
+        {
+            var participants = playersList.Count();
+
+            var res = participants > 0 && (participants & (participants - 1)) == 0;
+
+            return res;
         }
     }
 }
