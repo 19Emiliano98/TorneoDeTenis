@@ -55,7 +55,7 @@ namespace Services.Services
             return playerResponseList;
         }
 
-        private bool CheckAmountOfPlayers(List<Player> playersList)
+        private static bool CheckAmountOfPlayers(List<Player> playersList)
         {
             var participants = playersList.Count();
 
