@@ -9,19 +9,14 @@ namespace Services.Services
 {
     public class MatchService : IMatchService
     {
-        // lista de ganadores 
         private readonly TournamentContext _context;
-        // lista rde partidos 
         private readonly List<Match> matchResults = new List<Match>();
-
         public MatchService(TournamentContext context)
         {
             _context = context;
         }
 
-
         public async Task<PlayerStatsResponse> InitMatchAsync(List<PlayerStatsResponse> playerList)
-
         {
             var listResults = new List<PlayerStatsResponse>();
 
@@ -29,7 +24,6 @@ namespace Services.Services
 
             while (playerList.Count != 0)
             {
-
                 var indiceJugador1 = rnd.Next(0, playerList.Count);
                 var jugador1 = playerList[indiceJugador1];
                 playerList.RemoveAt(indiceJugador1);
@@ -48,14 +42,12 @@ namespace Services.Services
                     {
                         playerList.Add(player);
                     }
+                    
                     listResults.Clear();
                 }
             }
 
-
-
             return listResults[0];
-
         }
 
         public async Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo)
