@@ -4,7 +4,7 @@ using Services.Services;
 
 namespace WebAPI.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
     public class TournamentController : Controller
@@ -20,9 +20,33 @@ namespace WebAPI.Controllers
             _tournamentService = tournamentService;
         }
 
+        // los endpoints se pueden pensar en : después de crearlo puedo listar toda su info
 
-        [HttpGet]
-        /// traemos a los ganadores de los partidos
+        //[HttpGet("Matches/{Id}")]
+
+        //public async Task<IActionResult> GetListofMatch(int Id)
+        //{
+        //    var List = await _tournamentService.GetListofMatch(Id);
+        //    return Ok(List);
+        //}
+
+        //[HttpGet("Players/{Id}")]
+        //public async Task<IActionResult> GetPlayersOfTournant(int Id)
+        //{
+        //    var getPlayers = await _tournamentService.GetAllPlayers(Id);
+        //    return Ok(get);
+        //}
+
+
+
+
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetAllMatchesFromTournament(int Id)
+        {
+            var getTournament = await _tournamentService.GetPlayerForTournament(Id);
+            return Ok(getTournament);
+        }
+
         //public async Task<IActionResult> GetFirtMatchesWinner()
         [HttpPost]
         public async Task<IActionResult> InitTournament()
@@ -30,7 +54,7 @@ namespace WebAPI.Controllers
             await _tournamentService.CreateTournamentAsync("Copa Carlos");
 
             var playersList = await _playerService.SetLuckAsync();
-            
+
             var champion = await _matchService.InitMatchAsync(playersList);
 
 
@@ -38,7 +62,7 @@ namespace WebAPI.Controllers
 
             // acá listaria a los ganador previos 
             // matchgame o matchInitial a definir
-                
+
             //return Ok(response);
             return Ok(champion);
         }
