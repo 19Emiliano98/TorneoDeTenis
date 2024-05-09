@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Contracts.Enums;
+using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 using Services.Services;
 
@@ -36,6 +37,17 @@ namespace WebAPI.Controllers
         //    var getPlayers = await _tournamentService.GetAllPlayers(Id);
         //    return Ok(get);
         //}
+
+
+        // Probando como funcionan los Enums
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var test = Enum.GetName(typeof(Gender), Gender.Male);
+
+            return Ok(test);
+        }
+
 
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetTournamentByIdAsync(int Id)
