@@ -1,7 +1,7 @@
 ﻿using Contracts.DTO.Responses;
+using Contracts.DTO.Responses.Player;
 using Data.Entities;
 using Data.Repository;
-using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
 

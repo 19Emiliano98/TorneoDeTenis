@@ -1,10 +1,10 @@
 ﻿using Contracts.DTO.Requests;
 using Contracts.DTO.Responses;
+using Contracts.DTO.Responses.Player;
 using Contracts.Exceptions;
 using Contracts.Mappers;
 using Data.Entities;
 using Data.Repository;
-using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Services.Interfaces;

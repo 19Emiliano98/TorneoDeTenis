@@ -1,7 +1,8 @@
-﻿using Contracts.DTO.Responses;
+﻿using Contracts.DTO.Responses.Match;
+using Contracts.DTO.Responses.Player;
+using Contracts.DTO.Responses.Tournament;
 using Data.Entities;
 using Data.Repository;
-using DTO.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
@@ -37,7 +38,7 @@ namespace Services.Services
 
 
         // de mas 
-        public async Task<TournamentResultResponse> GetPlayerForTournament(int Id)
+        public async Task<TournamentResultResponse> GetDataTournamentAsync(int Id)
         {
             var tournament = await _context.Set<HistoryTournament>()
                                     .OrderByDescending(t => t.Id)
@@ -45,7 +46,26 @@ namespace Services.Services
                                     .Include(t => t.IdPlayerForeignKey)
                                     .FirstOrDefaultAsync();
 
-            var playerResponse = new PlayerStatsResponse
+            var matchs = await _context.Set<Match>()
+                                    .Where(t => t.IdTournament == tournament.Id)
+                                    .Include(t => t.MatchWinner)
+                                    .Include(t => t.MatchLoser)
+                                    .ToListAsync();
+
+            var matchListResponse = new List<MatchData>();
+
+            foreach (var match in matchs)
+            {
+                var matchData = new MatchData();
+
+                matchData.Id = match.Id;
+                matchData.Winner = match.MatchWinner.Name;
+                matchData.Loser = match.MatchLoser.Name;
+
+                matchListResponse.Add(matchData);
+            }
+
+            var playerResponse = new PlayerInfo
             {
                 Name = tournament.IdPlayerForeignKey.Name,
                 Luck = tournament.IdPlayerForeignKey.Luck,
@@ -56,13 +76,13 @@ namespace Services.Services
 
             var response = new TournamentResultResponse
             {
-                DataPlayer = playerResponse,
                 Name = tournament.Name,
-                Date = tournament.Date
+                Date = tournament.Date,
+                Champion = playerResponse,
+                MatchsPlayed = matchListResponse
             };
 
             return response;
-
         }
         
         //public async Task<List<PlayerStatsResponse>> GetAllPlayers(int Id)

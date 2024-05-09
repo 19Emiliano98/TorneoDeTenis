@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Contracts.DTO.Responses.Player;
 using Data.Entities;
-using DTO.Responses;
 
 namespace Contracts.Mappers
 {

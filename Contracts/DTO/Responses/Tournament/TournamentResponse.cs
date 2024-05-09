@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Contracts.DTO.Responses.Player;
 
-namespace Contracts.DTO.Responses
+namespace Contracts.DTO.Responses.Tournament
 {
     public class TournamentResponse
     {

@@ -1,6 +1,6 @@
-﻿using Contracts.DTO.Responses;
+﻿using Contracts.DTO.Responses.Player;
+using Contracts.DTO.Responses.Tournament;
 using Data.Entities;
-using DTO.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +13,6 @@ namespace Services.Interfaces
     {
         Task CreateTournamentAsync(string name);
         Task SetChampion(PlayerStatsResponse champeon);
-
-        // List de jugadores del capeonato
-        //Task<List<PlayerStatsResponse>> GetAllPlayers(int Id);
-        Task<TournamentResultResponse> GetPlayerForTournament(int Id);
-
-        //Task<List<PlayerMatchesResponse>> GetListofMatch(int Id);
-
-
-
+        Task<TournamentResultResponse> GetDataTournamentAsync(int Id);
     }
 }
