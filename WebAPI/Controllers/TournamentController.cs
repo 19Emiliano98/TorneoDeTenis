@@ -37,13 +37,11 @@ namespace WebAPI.Controllers
         //    return Ok(get);
         //}
 
-
-
-
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetAllMatchesFromTournament(int Id)
         {
             var getTournament = await _tournamentService.GetPlayerForTournament(Id);
+            
             return Ok(getTournament);
         }
 

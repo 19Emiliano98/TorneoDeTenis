@@ -40,8 +40,10 @@ namespace Services.Services
         public async Task<TournamentResultResponse> GetPlayerForTournament(int Id)
         {
             var tournament = await _context.Set<HistoryTournament>()
-                .Include(t => t.IdPlayerForeignKey)
-                .FirstOrDefaultAsync(t => t.IdPlayer == Id);
+                                    .OrderByDescending(t => t.Id)
+                                    .Where(t => t.Id == Id)
+                                    .Include(t => t.IdPlayerForeignKey)
+                                    .FirstOrDefaultAsync();
 
             var playerResponse = new PlayerStatsResponse
             {
@@ -62,6 +64,7 @@ namespace Services.Services
             return response;
 
         }
+        
         //public async Task<List<PlayerStatsResponse>> GetAllPlayers(int Id)
         //{
 
@@ -117,8 +120,6 @@ namespace Services.Services
 
         //    return matchesResponse;
         //}
-
-
 
         public async Task SetChampion(PlayerStatsResponse champeon)
         {
