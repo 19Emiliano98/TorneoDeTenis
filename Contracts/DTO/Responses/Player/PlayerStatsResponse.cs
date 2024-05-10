@@ -14,7 +14,8 @@ namespace Contracts.DTO.Responses.Player
         public int Hability { get; set; }
         public int Strenght { get; set; }
         public int Speed { get; set; }
-
+        public int TimeReaction { get; set; }
+        public string Gender { get; set; }
     }
 
 

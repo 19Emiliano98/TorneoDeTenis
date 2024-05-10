@@ -1,14 +1,10 @@
 ﻿using Contracts.DTO.Requests;
-using Contracts.DTO.Responses;
 using Contracts.DTO.Responses.Player;
-using Contracts.Exceptions;
 using Contracts.Mappers;
 using Data.Entities;
 using Data.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Services.Interfaces;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Services.Services
 {
@@ -30,6 +26,8 @@ namespace Services.Services
 
             if (!CheckAmountOfPlayers(playersList))
             {
+                // Testear que las condiciones y los resultados sean los esperados
+
                 throw new Exception("Los participantes del torneo no son potencia de 2");
             }
 
@@ -57,7 +55,7 @@ namespace Services.Services
 
         private static bool CheckAmountOfPlayers(List<Player> playersList)
         {
-            var participants = playersList.Count();
+            var participants = playersList.Count;
 
             var res = participants > 0 && (participants & (participants - 1)) == 0;
 
