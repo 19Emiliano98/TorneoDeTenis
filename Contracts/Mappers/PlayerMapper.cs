@@ -18,6 +18,8 @@ namespace Contracts.Mappers
                 Hability = data.Hability,
                 Strenght = data.Strenght,
                 Speed = data.Speed,
+                TimeReaction = data.TimeReaction,
+                Gender = data.Gender
             };
         }
     }

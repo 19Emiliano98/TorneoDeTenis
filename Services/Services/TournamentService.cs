@@ -1,6 +1,8 @@
-﻿using Contracts.DTO.Responses.Match;
+﻿using Contracts.DTO.Requests;
+using Contracts.DTO.Responses.Match;
 using Contracts.DTO.Responses.Player;
 using Contracts.DTO.Responses.Tournament;
+using Contracts.Enums;
 using Contracts.Mappers;
 using Data.Entities;
 using Data.Repository;
@@ -12,10 +14,14 @@ namespace Services.Services
     public class TournamentService : ITournamentService
     {
         private readonly TournamentContext _context;
+        private readonly IPlayerService _playerService;
+        private readonly IMatchService _matchService;
 
-        public TournamentService(TournamentContext context)
+        public TournamentService(TournamentContext context, IPlayerService playerService, IMatchService matchService)
         {
             _context = context;
+            _playerService = playerService;
+            _matchService = matchService;
         }
 
         public async Task CreateTournamentAsync(string name)
@@ -96,6 +102,19 @@ namespace Services.Services
             }
             
             return AllTournamentList;
+        }
+
+        public async Task<PlayerStats> InitTournamentMicroService(InitTournamentRequest request)
+        {
+            await CreateTournamentAsync(request.TournamentName);
+
+            var playersList = await _playerService.SetLuckAsync(request.TournamentGenderOfPlayers);
+
+            var champion = await _matchService.InitMatchAsync(playersList);
+
+            await SetChampion(champion);
+
+            return champion;
         }
     }
 }

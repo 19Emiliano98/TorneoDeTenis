@@ -1,4 +1,5 @@
-﻿using Contracts.Enums;
+﻿using Contracts.DTO.Requests;
+using Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 
@@ -8,14 +9,10 @@ namespace WebAPI.Controllers
     [ApiController]
     public class TournamentController : Controller
     {
-        private readonly IPlayerService _playerService;
-        private readonly IMatchService _matchService;
         private readonly ITournamentService _tournamentService;
 
-        public TournamentController(IPlayerService playerService, IMatchService matchService, ITournamentService tournamentService)
+        public TournamentController(ITournamentService tournamentService)
         {
-            _playerService = playerService;
-            _matchService = matchService;
             _tournamentService = tournamentService;
         }
 
@@ -37,34 +34,11 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("Males")]
-        public async Task<IActionResult> InitTournamentMales([FromBody] string name)
+        public async Task<IActionResult> InitTournament([FromBody] InitTournamentRequest data)
         {
-            await _tournamentService.CreateTournamentAsync(name);
-
-            var playersList = await _playerService.SetLuckAsync(Enum.GetName(typeof(Gender), Gender.Male));
-
-            var champion = await _matchService.InitMatchAsync(playersList);
-
-            await _tournamentService.SetChampion(champion);
+            var champion = await _tournamentService.InitTournamentMicroService(data);
 
             return Ok(champion);
         }
-
-        [HttpPost]
-        [Route("Females")]
-        public async Task<IActionResult> InitTournamentFemales([FromBody] string name)
-        {
-            await _tournamentService.CreateTournamentAsync(name);
-
-            var playersList = await _playerService.SetLuckAsync(Enum.GetName(typeof(Gender), Gender.Female));
-
-            var champion = await _matchService.InitMatchAsync(playersList);
-
-            await _tournamentService.SetChampion(champion);
-
-            return Ok(champion);
-        }
-
     }
 }

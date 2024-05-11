@@ -1,11 +1,6 @@
-﻿using Contracts.DTO.Responses.Player;
+﻿using Contracts.DTO.Requests;
+using Contracts.DTO.Responses.Player;
 using Contracts.DTO.Responses.Tournament;
-using Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
@@ -15,5 +10,6 @@ namespace Services.Interfaces
         Task SetChampion(PlayerStats champeon);
         Task<TournamentResult> GetDataTournamentAsync(int Id);
         Task<List<TournamentGetAll>> GetAllTournamentsAsync();
+        Task<PlayerStats> InitTournamentMicroService(InitTournamentRequest request);
     }
 }
