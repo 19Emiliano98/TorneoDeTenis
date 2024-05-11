@@ -3,16 +3,13 @@ using Contracts.Middlewares.MiddlewaresService;
 using Data.Configuration;
 using Services.Interfaces;
 using Services.Services;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// DBCOntext
 builder.Services.AddTournamentDbConfiguration();
 
 builder.Services.AddScoped<IExceptionService, ExceptionService>();

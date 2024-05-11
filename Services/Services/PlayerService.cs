@@ -18,7 +18,7 @@ namespace Services.Services
 
         }
 
-        public async Task<List<PlayerStatsResponse>> SetLuckAsync(string gender)
+        public async Task<List<PlayerStats>> SetLuckAsync(string gender)
         {
             var playersList = await _context.Set<Player>()
                                             .Where(x => x.Gender == gender)
@@ -31,7 +31,7 @@ namespace Services.Services
                 throw new Exception("Los participantes del torneo no son potencia de 2");
             }
 
-            var playerResponseList = new List<PlayerStatsResponse>();
+            var playerResponseList = new List<PlayerStats>();
             
             var random = new Random();
 

@@ -8,9 +8,9 @@ namespace Contracts.Mappers
 {
     public static class PlayerMapper
     {
-        public static PlayerStatsResponse ToPlayerStatsResponse(this Player data)
+        public static PlayerStats ToPlayerStatsResponse(this Player data)
         {
-            return new PlayerStatsResponse()
+            return new PlayerStats()
             {
                 Id = data.Id,
                 Name = data.Name,

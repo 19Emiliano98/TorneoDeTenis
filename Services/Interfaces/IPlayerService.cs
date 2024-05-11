@@ -13,6 +13,6 @@ namespace Services.Interfaces
 {
     public interface IPlayerService
     {
-        Task<List<PlayerStatsResponse>> SetLuckAsync(string gender);
+        Task<List<PlayerStats>> SetLuckAsync(string gender);
     }
 }

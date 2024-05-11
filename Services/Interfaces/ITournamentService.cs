@@ -12,7 +12,7 @@ namespace Services.Interfaces
     public interface ITournamentService
     {
         Task CreateTournamentAsync(string name);
-        Task SetChampion(PlayerStatsResponse champeon);
-        Task<TournamentResultResponse> GetDataTournamentAsync(int Id);
+        Task SetChampion(PlayerStats champeon);
+        Task<TournamentResult> GetDataTournamentAsync(int Id);
     }
 }

@@ -14,9 +14,9 @@ namespace Services.Services
             _context = context;
         }
 
-        public async Task<PlayerStatsResponse> InitMatchAsync(List<PlayerStatsResponse> playerList)
+        public async Task<PlayerStats> InitMatchAsync(List<PlayerStats> playerList)
         {
-            var listResults = new List<PlayerStatsResponse>();
+            var listResults = new List<PlayerStats>();
 
             while (playerList.Count != 0)
             {
@@ -41,7 +41,7 @@ namespace Services.Services
             return listResults[0];
         }
 
-        public async Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo)
+        public async Task<PlayerStats> MatchGame(PlayerStats playerOne, PlayerStats playerTwo)
         {
             var matchNewData = new Match();
 
@@ -72,7 +72,7 @@ namespace Services.Services
             return playerTwo;
         }
 
-        private static PlayerStatsResponse SelectPlayer(List<PlayerStatsResponse> playerList)
+        private static PlayerStats SelectPlayer(List<PlayerStats> playerList)
         {
             var random = new Random();
 
@@ -84,7 +84,7 @@ namespace Services.Services
             return player;
         }
 
-        private static int PointsCalculator(PlayerStatsResponse playerData)
+        private static int PointsCalculator(PlayerStats playerData)
         {
             int totalPoint;
 

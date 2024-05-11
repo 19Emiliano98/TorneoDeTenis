@@ -10,9 +10,9 @@ namespace Services.Interfaces
 {
     public interface IMatchService
     {
-        Task<PlayerStatsResponse> InitMatchAsync(List<PlayerStatsResponse> playerList);
+        Task<PlayerStats> InitMatchAsync(List<PlayerStats> playerList);
 
-        Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo);
+        Task<PlayerStats> MatchGame(PlayerStats playerOne, PlayerStats playerTwo);
 
      
     }

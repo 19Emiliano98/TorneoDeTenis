@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.DTO.Responses.Player
 {
-    public class PlayerStatsResponse
+    public class PlayerStats
     {
         public int Id { get; set; }
         public string Name { get; set; }
