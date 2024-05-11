@@ -49,5 +49,18 @@ namespace Contracts.Middlewares.MiddlewaresService
 
             await context.Response.Body.WriteAsync(Encoding.UTF8.GetBytes(error));
         }
+
+        public async Task Unauthorized(HttpContext context, BadRequestException uNauthorized)
+        {
+            context.Response.ContentType = context.Response.ContentType == null ?
+                                 "application/problem+json" :
+                                 context.Response.ContentType + ";application/problem+json";
+
+            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+
+            var error = uNauthorized.GetJsonDescription();
+
+            await context.Response.Body.WriteAsync(Encoding.UTF8.GetBytes(error));
+        }
     }
 }

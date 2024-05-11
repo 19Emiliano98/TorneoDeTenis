@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 using Services.Services;
 
@@ -7,6 +8,7 @@ namespace WebAPI.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+   
     public class TournamentController : Controller
     {
         private readonly IPlayerService _playerService;
@@ -38,7 +40,8 @@ namespace WebAPI.Controllers
         //}
 
 
-
+        [Authorize(Policy ="SuperAdmin")]
+        //[Authorize(Roles = "arbitro")]
 
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetAllMatchesFromTournament(int Id)
@@ -48,6 +51,9 @@ namespace WebAPI.Controllers
         }
 
         //public async Task<IActionResult> GetFirtMatchesWinner()
+        [Authorize(Roles = "arbitro")]
+
+
         [HttpPost]
         public async Task<IActionResult> InitTournament()
         {

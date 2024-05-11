@@ -16,6 +16,26 @@ INSERT INTO [dbo].[Player]
 		   ( 'Gustavo Lucci', 0, 69, 31,52 ),
 		   ( 'Roque Olguin', 0, 49, 70,42 ),
 		   ( 'Joaquin Martinez', 0, 50, 47,43 )
+
+
+
+
 GO
+
+USE [TenisTournament]
+GO
+
+INSERT INTO [dbo].[Users]
+           ([Name]
+           ,[Password]
+           ,[RefeshToken]
+           ,[RefeshTokenExpiration])
+     VALUES
+          ('sarasa@gmail.com','Tarata',NUll,NULL)
+          
+GO
+
+
+
 
 
