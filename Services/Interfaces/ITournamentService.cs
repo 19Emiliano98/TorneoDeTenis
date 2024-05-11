@@ -14,5 +14,6 @@ namespace Services.Interfaces
         Task CreateTournamentAsync(string name);
         Task SetChampion(PlayerStats champeon);
         Task<TournamentResult> GetDataTournamentAsync(int Id);
+        Task<List<TournamentGetAll>> GetAllTournamentsAsync();
     }
 }

@@ -20,6 +20,14 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            var response = await _tournamentService.GetAllTournamentsAsync();
+
+            return Ok(response);
+        }
+
+        [HttpGet]
         [Route("{Id}")]
         public async Task<IActionResult> GetTournamentByIdAsync(int Id)
         {

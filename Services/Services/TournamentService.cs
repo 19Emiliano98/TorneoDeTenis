@@ -1,6 +1,7 @@
 ﻿using Contracts.DTO.Responses.Match;
 using Contracts.DTO.Responses.Player;
 using Contracts.DTO.Responses.Tournament;
+using Contracts.Mappers;
 using Data.Entities;
 using Data.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -71,14 +72,30 @@ namespace Services.Services
         {
 
             var lastTournament = await _context.Set<HistoryTournament>()
-                                    .OrderByDescending(t => t.Id)
-                                    .FirstOrDefaultAsync();
+                                            .OrderByDescending(t => t.Id)
+                                            .FirstOrDefaultAsync();
 
             lastTournament.IdPlayer = champeon.Id;
 
             _context.Set<HistoryTournament>().Update(lastTournament);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<TournamentGetAll>> GetAllTournamentsAsync()
+        {
+            var allTournaments = await _context.Set<HistoryTournament>()
+                                            .Include(t => t.IdPlayerForeignKey)
+                                            .ToListAsync();
+            
+            var AllTournamentList = new List<TournamentGetAll>();
+
+            foreach(var tournament in allTournaments)
+            {
+                AllTournamentList.Add(tournament.ToPlayerStatsResponse());
+            }
+            
+            return AllTournamentList;
         }
     }
 }
