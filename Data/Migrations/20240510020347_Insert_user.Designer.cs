@@ -4,6 +4,7 @@ using Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    partial class TournamentContextModelSnapshot : ModelSnapshot
+    [Migration("20240510020347_Insert_user")]
+    partial class Insert_user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,11 +97,6 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Gender");
-
                     b.Property<int>("Hability")
                         .HasColumnType("int")
                         .HasColumnName("Hability");
@@ -120,10 +118,6 @@ namespace Data.Migrations
                     b.Property<int>("Strenght")
                         .HasColumnType("int")
                         .HasColumnName("Strenght");
-
-                    b.Property<int>("TimeReaction")
-                        .HasColumnType("int")
-                        .HasColumnName("TimeReaction");
 
                     b.HasKey("Id");
 

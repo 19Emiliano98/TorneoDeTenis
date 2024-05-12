@@ -17,5 +17,9 @@ namespace Contracts.Middlewares.MiddlewaresService
 
         Task GetLoopExceptionResponseAsync(HttpContext context, BadRequestException loopException);
 
+        Task Unauthorized(HttpContext context, BadRequestException uNauthorized);
+
+
+
     }
 }

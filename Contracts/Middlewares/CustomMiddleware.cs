@@ -30,11 +30,13 @@ namespace Contracts.Middlewares
             catch (BadRequestException badRequestException)
             {
                 await exceptionService.GetBadRequestExceptionResponseAsync(context, badRequestException);
+
             }
             catch
             {
-                //Alguna logica de que devolvemos en caso de que capturemos esa exception
+                //await exceptionService.Unauthorized(context, uNauthorized);
 
+                //Alguna logica de que devolvemos en caso de que capturemos esa exception
                 throw;
             }
         }
