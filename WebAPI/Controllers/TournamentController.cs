@@ -1,5 +1,6 @@
 ﻿using Contracts.DTO.Requests;
 using Contracts.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 
@@ -26,6 +27,7 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("{Id}")]
+        [Authorize(Policy = "Jugador")]
         public async Task<IActionResult> GetTournamentByIdAsync(int Id)
         {
             var getTournament = await _tournamentService.GetDataTournamentAsync(Id);
@@ -34,6 +36,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Arbitro")]
         public async Task<IActionResult> InitTournament([FromBody] InitTournamentRequest data)
         {
             var champion = await _tournamentService.InitTournamentMicroService(data);

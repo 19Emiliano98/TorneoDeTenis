@@ -110,7 +110,7 @@ namespace Data.Configuration
                                 Id = "Bearer"
                             }
                         },
-                        new string[] { }
+                        new string[]{}
                     }
                 });
             });
