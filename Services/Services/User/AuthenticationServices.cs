@@ -1,9 +1,6 @@
 ﻿using Contracts.DTO.Responses.JwtResponse;
 using Data.Entities;
 using Data.Repository;
-using JwtSecurity;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Services.Interfaces.User;
 using System.IdentityModel.Tokens.Jwt;
@@ -35,6 +32,7 @@ namespace Services.Services.User
                 return Convert.ToBase64String(randomNumber);
             }
         }
+
         public TokenResponse generateToken(Users user)
         {
             if (user == null)

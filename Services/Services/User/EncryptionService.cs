@@ -14,7 +14,6 @@ namespace Services.Services.User
             _encryp = encrypt;
         }
 
-
         public string Encrypt(string name)
         {
             return Encrypt(name, _encryp.EncryptionKey);
@@ -24,7 +23,6 @@ namespace Services.Services.User
         {
             return Encrypt(name, _encryp.EncryptionKey);
         }
-        // validar forbidden
 
         private string Encrypt(string plainText, string key)
         {

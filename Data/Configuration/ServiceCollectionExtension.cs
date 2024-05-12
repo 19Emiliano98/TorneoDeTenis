@@ -22,11 +22,6 @@ namespace Data.Configuration
                 _config = ServiceScope.ServiceProvider.GetService<IConfiguration>()!;
             }
 
-            // prueba de conexión 
-            //var connectionString = _config["Application:ConnectionString"];
-
-
-
             var ApllicationOptions = new ApllicationOptions();
 
             _config.GetSection(ApllicationOptions.Section).Bind(ApllicationOptions);
@@ -64,7 +59,6 @@ namespace Data.Configuration
 
             services.AddSingleton(typeof(AuthenticationOptions), authenticationOptions);
         }
-
 
         public static void ConfigureJwt(this IServiceCollection services)
         {
