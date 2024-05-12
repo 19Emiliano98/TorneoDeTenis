@@ -24,6 +24,11 @@ namespace Services.Services
                                             .Where(x => x.Gender == gender)
                                             .ToListAsync();
 
+            if(!playersList.Any())
+            {
+                throw new Exception("No hay participantes");
+            }
+
             if (!CheckAmountOfPlayers(playersList))
             {
                 // Testear que las condiciones y los resultados sean los esperados

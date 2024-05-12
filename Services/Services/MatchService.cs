@@ -48,6 +48,14 @@ namespace Services.Services
             var pointsPlayerOne = PointsCalculator(playerOne);
             var pointsPlayerTwo = PointsCalculator(playerTwo);
 
+            while (pointsPlayerOne.Equals(pointsPlayerTwo))
+            {
+                var random = new Random();
+
+                pointsPlayerOne += random.Next(0, 300);
+                pointsPlayerTwo += random.Next(0, 300);
+            }
+
             if (pointsPlayerOne > pointsPlayerTwo)
             {
                 matchNewData.IdTournament = await SeekLastTournamentAsync();

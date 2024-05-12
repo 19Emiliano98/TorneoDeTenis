@@ -26,10 +26,11 @@ namespace Services.Services
 
         public async Task CreateTournamentAsync(string name)
         {
-            var tournament = new HistoryTournament();
-
-            tournament.Name = name;
-            tournament.Date = DateTime.Now;
+            var tournament = new HistoryTournament
+            {
+                Name = name,
+                Date = DateTime.Now
+            };
 
             _context.Set<HistoryTournament>().Add(tournament);
 
@@ -50,15 +51,21 @@ namespace Services.Services
                                     .Include(t => t.MatchLoser)
                                     .ToListAsync();
 
+            if (tournament == null || matchs == null)
+            {
+                throw new Exception("Hubo un error al encontrar datos en la tabla de Torneo o Partido");
+            }
+
             var matchListResponse = new List<MatchData>();
 
             foreach (var match in matchs)
             {
-                var matchData = new MatchData();
-
-                matchData.Id = match.Id;
-                matchData.Winner = match.MatchWinner.Name;
-                matchData.Loser = match.MatchLoser.Name;
+                var matchData = new MatchData
+                {
+                    Id = match.Id,
+                    Winner = match.MatchWinner.Name,
+                    Loser = match.MatchLoser.Name
+                };
 
                 matchListResponse.Add(matchData);
             }
@@ -81,6 +88,11 @@ namespace Services.Services
                                             .OrderByDescending(t => t.Id)
                                             .FirstOrDefaultAsync();
 
+            if (lastTournament == null)
+            {
+                throw new Exception("No existe ningun torneo en la Base de Datos");
+            }
+
             lastTournament.IdPlayer = champeon.Id;
 
             _context.Set<HistoryTournament>().Update(lastTournament);
@@ -93,6 +105,11 @@ namespace Services.Services
             var allTournaments = await _context.Set<HistoryTournament>()
                                             .Include(t => t.IdPlayerForeignKey)
                                             .ToListAsync();
+
+            if(!allTournaments.Any())
+            {
+                throw new Exception("No hay torneos en la tabla");
+            }
             
             var AllTournamentList = new List<TournamentGetAll>();
 
