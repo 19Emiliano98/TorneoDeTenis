@@ -4,19 +4,19 @@ using Newtonsoft.Json;
 
 namespace Contracts.Exceptions
 {
-    public class BadRequestException : Exception
+    public class NotFoundException : Exception
     {
         private readonly string _titulo;
         private readonly string _detalle;
         private readonly List<(string, string)> _errors;
 
-        public BadRequestException(string titulo, string detalle)
+        public NotFoundException(string titulo, string detalle)
         {
             _titulo = titulo;
             _detalle = detalle;
         }
 
-        public BadRequestException(string titulo, string detalle, List<(string, string)> errors)
+        public NotFoundException(string titulo, string detalle, List<(string, string)> errors)
         {
             _titulo = titulo;
             _detalle = detalle;
@@ -29,7 +29,7 @@ namespace Contracts.Exceptions
             {
                 Title = _titulo,
                 Detail = _detalle,
-                Status = (int)StatusCodes.Status400BadRequest,
+                Status = (int)StatusCodes.Status404NotFound,
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
             };
 
@@ -44,5 +44,6 @@ namespace Contracts.Exceptions
 
             return JsonConvert.SerializeObject(problemDetails);
         }
+
     }
 }

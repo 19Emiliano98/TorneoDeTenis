@@ -13,13 +13,10 @@ namespace Contracts.Middlewares.MiddlewaresService
     {
         Task GetBadRequestExceptionResponseAsync(HttpContext context, BadRequestException badRequestException);
 
-        Task GetNotFoundExceptionResponseAsync(HttpContext context, BadRequestException notFoundRequestException);
+        Task GetNotFoundExceptionResponseAsync(HttpContext context, NotFoundException notFoundRequestException);
 
         Task GetLoopExceptionResponseAsync(HttpContext context, BadRequestException loopException);
 
         Task Unauthorized(HttpContext context, BadRequestException uNauthorized);
-
-
-
     }
 }

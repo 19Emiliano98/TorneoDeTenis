@@ -1,5 +1,4 @@
 ﻿using Contracts.DTO.Requests;
-using Contracts.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;

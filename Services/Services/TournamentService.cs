@@ -2,7 +2,6 @@
 using Contracts.DTO.Responses.Match;
 using Contracts.DTO.Responses.Player;
 using Contracts.DTO.Responses.Tournament;
-using Contracts.Enums;
 using Contracts.Mappers;
 using Data.Entities;
 using Data.Repository;
