@@ -1,4 +1,5 @@
-﻿using Contracts.DTO.Responses.JwtResponse;
+﻿using Contracts.DTO.Requests.Jwt;
+using Contracts.DTO.Responses.JwtResponse;
 using Data.Entities;
 using Data.Repository;
 using JwtSecurity;
@@ -20,7 +21,6 @@ namespace Services.Services.User
 {
     public class AuthenticationServices : IAuthenticationServices
     {
-        // por que me da ambiguedad 
         private readonly JwtSecurity.AuthenticationOptions _authenticationOptions;
         private readonly TournamentContext _contxt;
 
@@ -30,7 +30,7 @@ namespace Services.Services.User
             _contxt = contxt;
         }
 
-        private string GenerateRefreshToken()
+        public  string GenerateRefreshToken()
         {
 
 
@@ -63,7 +63,8 @@ namespace Services.Services.User
             {
                 new Claim("Id", user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.Name),
-                 new Claim("Role",role)
+                new Claim("Role",role),
+                //new Claim("AdminType",user.Name)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationOptions.Key));
@@ -107,5 +108,9 @@ namespace Services.Services.User
             await _contxt.SaveChangesAsync();
         }
 
+        public TokenRequest newToken(Users user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,7 +1,6 @@
-﻿using Contracts.DTO.Responses;
+﻿using Contracts.DTO.Responses.Player;
 using Data.Entities;
 using Data.Repository;
-using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
 
@@ -9,36 +8,22 @@ namespace Services.Services
 {
     public class MatchService : IMatchService
     {
-        // lista de ganadores 
         private readonly TournamentContext _context;
-        // lista rde partidos 
-        private readonly List<Match> matchResults = new List<Match>();
-
         public MatchService(TournamentContext context)
         {
             _context = context;
         }
 
-
-        public async Task<PlayerStatsResponse> InitMatchAsync(List<PlayerStatsResponse> playerList)
-
+        public async Task<PlayerStats> InitMatchAsync(List<PlayerStats> playerList)
         {
-            var listResults = new List<PlayerStatsResponse>();
-
-            Random rnd = new Random();
+            var listResults = new List<PlayerStats>();
 
             while (playerList.Count != 0)
             {
+                var playerOne = SelectPlayer(playerList);
+                var playerTwo = SelectPlayer(playerList);
 
-                var indiceJugador1 = rnd.Next(0, playerList.Count);
-                var jugador1 = playerList[indiceJugador1];
-                playerList.RemoveAt(indiceJugador1);
-
-                var indiceJugador2 = rnd.Next(0, playerList.Count);
-                var jugador2 = playerList[indiceJugador2];
-                playerList.RemoveAt(indiceJugador2);
-
-                var winnerOfMatch = await MatchGame(jugador1, jugador2);
+                var winnerOfMatch = await MatchGame(playerOne, playerTwo);
 
                 listResults.Add(winnerOfMatch);
 
@@ -48,82 +33,35 @@ namespace Services.Services
                     {
                         playerList.Add(player);
                     }
+                    
                     listResults.Clear();
                 }
             }
 
-
-
             return listResults[0];
-
         }
 
-        public async Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo)
+        public async Task<PlayerStats> MatchGame(PlayerStats playerOne, PlayerStats playerTwo)
         {
-
-            var habilityPlayerOne = (playerOne.Strenght, playerOne.Speed, playerOne.Luck, playerOne.Hability);
-            var habilityPlayerTwo = (playerTwo.Strenght, playerTwo.Speed, playerOne.Luck, playerTwo.Hability);
-
-            var random = new Random();
-
-            int habilityTotalPlayerOne = 0;
-            int habilityTotalPlayerTwo = 0;
-
-            while (habilityPlayerOne.Equals(habilityPlayerTwo))
-            {
-
-                if (random.Next(2) == 0)
-                {
-
-                    playerOne.Strenght += playerOne.Luck ?? 0;
-
-                    playerOne.Luck += playerOne.Hability;
-
-                    playerTwo.Hability -= playerTwo.Luck ?? 0;
-
-                    playerOne.Strenght -= playerOne.Luck ?? 0;
-
-                    playerTwo.Strenght += playerTwo.Luck ?? 0;
-
-                    playerOne.Speed += playerOne.Luck ?? 0;
-
-                    playerTwo.Speed -= playerTwo.Luck ?? 0;
-
-                }
-                else
-                {
-                    playerOne.Strenght += playerOne.Luck ?? 0;
-                    playerTwo.Strenght -= playerTwo.Luck ?? 0;
-
-                    playerOne.Speed -= playerOne.Luck ?? 0;
-                    playerTwo.Speed += playerOne.Luck ?? 0;
-
-                    playerOne.Hability -= playerOne.Luck ?? 0;
-                    playerTwo.Hability += playerTwo.Luck ?? 0;
-                }
-
-
-                habilityTotalPlayerOne = (playerOne.Strenght + playerOne.Speed + playerOne.Hability);
-                habilityTotalPlayerTwo = (playerTwo.Strenght + playerTwo.Speed + playerTwo.Hability);
-            }
-            // esta bien setear la entidad si tenemos el dto ?
             var matchNewData = new Match();
-            //var matchNewData = new PlayerMatchesResponse();
-            if (habilityTotalPlayerOne > habilityTotalPlayerTwo)
+
+            var pointsPlayerOne = PointsCalculator(playerOne);
+            var pointsPlayerTwo = PointsCalculator(playerTwo);
+
+            if (pointsPlayerOne > pointsPlayerTwo)
             {
-                matchNewData.IdTournament = await SeekTournamentIdAsync();
+                matchNewData.IdTournament = await SeekLastTournamentAsync();
                 matchNewData.IdWinner = playerOne.Id;
                 matchNewData.IdLoser = playerTwo.Id;
 
                 _context.Set<Match>().Add(matchNewData);
 
                 await _context.SaveChangesAsync();
-                // almaceno a los ganadores
-                matchResults.Add(matchNewData);
+
                 return playerOne;
             }
 
-            matchNewData.IdTournament = await SeekTournamentIdAsync();
+            matchNewData.IdTournament = await SeekLastTournamentAsync();
             matchNewData.IdWinner = playerTwo.Id;
             matchNewData.IdLoser = playerOne.Id;
 
@@ -131,12 +69,40 @@ namespace Services.Services
 
             await _context.SaveChangesAsync();
 
-            matchResults.Add(matchNewData);
-
             return playerTwo;
         }
 
-        private async Task<int> SeekTournamentIdAsync()
+        private static PlayerStats SelectPlayer(List<PlayerStats> playerList)
+        {
+            var random = new Random();
+
+            var playerIndex = random.Next(0, playerList.Count);
+            var player = playerList[playerIndex];
+
+            playerList.RemoveAt(playerIndex);
+
+            return player;
+        }
+
+        private static int PointsCalculator(PlayerStats playerData)
+        {
+            int totalPoint;
+
+            var basePoints = (int)playerData.Luck * playerData.Hability;
+
+            if (playerData.Gender == "Male")
+            {
+                totalPoint = basePoints + playerData.Strenght + playerData.Speed;
+
+                return totalPoint;
+            }
+
+            totalPoint = basePoints + playerData.TimeReaction;
+
+            return totalPoint;
+        }
+
+        private async Task<int> SeekLastTournamentAsync()
         {
             var lastTournament = await _context.Set<HistoryTournament>()
                                                 .OrderByDescending(x => x.Id)
@@ -144,7 +110,7 @@ namespace Services.Services
 
             if (lastTournament == null)
             {
-                throw new Exception();
+                throw new Exception("No existen torneos en la tabla");
             }
 
             return lastTournament.Id;

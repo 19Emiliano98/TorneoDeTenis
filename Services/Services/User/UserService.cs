@@ -33,7 +33,6 @@ namespace Services.Services.User
             newUser.Password = _encryptionService.Encrypt(user.Password);
 
 
-            // condicion
             _context.Add(newUser);
             await _context.SaveChangesAsync();
 
@@ -43,9 +42,10 @@ namespace Services.Services.User
 
         }
 
-        public Task<Users> GetUserByRefreshToken(string refreshToken)
+        public async Task<Users> GetUserByRefreshToken(string refreshToken)
         {
-            throw new NotImplementedException();
+            return await _context.Set<Users>()
+                .FirstOrDefaultAsync(u => u.refreshToken == refreshToken);
         }
 
         public async Task<Users> UserValidationAsync(UserRequest user)

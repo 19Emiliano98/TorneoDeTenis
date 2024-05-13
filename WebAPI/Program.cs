@@ -4,16 +4,15 @@ using Data.Configuration;
 using Services.Interfaces;
 using Services.Interfaces.User;
 using Services.Services;
+
 using Services.Services.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// DBCOntext
 builder.Services.AddTournamentDbConfiguration();
 builder.Services.AddEcnryptionOptions();
 builder.Services.AddAuthenticationOptions();
@@ -30,7 +29,7 @@ builder.Services.ConfigureJwt();
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("SuperAdmin", policy => policy.RequireClaim("AdminType","role"));
+    options.AddPolicy("SuperAdmin", policy => policy.RequireClaim("Role","arbitro"));
 });
 
 

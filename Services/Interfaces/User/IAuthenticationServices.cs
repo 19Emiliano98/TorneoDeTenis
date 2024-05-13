@@ -1,4 +1,5 @@
-﻿using Contracts.DTO.Responses.JwtResponse;
+﻿using Contracts.DTO.Requests.Jwt;
+using Contracts.DTO.Responses.JwtResponse;
 using Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace Services.Interfaces.User
     {
         TokenResponse generateToken(Users user);
 
+        Task UpdateRefreshToken(Users userFromDB, string refreshToken);
 
+        public string GenerateRefreshToken();
     }
 }

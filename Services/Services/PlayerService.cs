@@ -1,12 +1,9 @@
 ﻿using Contracts.DTO.Requests;
-using Contracts.DTO.Responses;
-using Contracts.Exceptions;
+using Contracts.DTO.Responses.Player;
 using Contracts.Mappers;
 using Data.Entities;
 using Data.Repository;
-using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Services.Interfaces;
 
 namespace Services.Services
@@ -21,21 +18,27 @@ namespace Services.Services
 
         }
 
-        public async Task<List<PlayerStatsResponse>> SetLuckAsync()
+        public async Task<List<PlayerStats>> SetLuckAsync(string gender)
         {
-            var playersList = await _context.Set<Player>().ToListAsync();
+            var playersList = await _context.Set<Player>()
+                                            .Where(x => x.Gender == gender)
+                                            .ToListAsync();
+
+            if (!CheckAmountOfPlayers(playersList))
+            {
+                // Testear que las condiciones y los resultados sean los esperados
+
+                throw new Exception("Los participantes del torneo no son potencia de 2");
+            }
+
+            var playerResponseList = new List<PlayerStats>();
             
-            var playerResponseList = new List<PlayerStatsResponse>();
             var random = new Random();
 
             foreach (var player in playersList)
             {
 
-                player.Luck = random.Next(0, 101);
-                //player.Luck = random.Next(20, 30);
-
-                // tiro un nro random 0 u 1 
-                // si es dos se sumaria la la luck 
+                player.Luck = random.Next(1, 100);
               
                 _context.Set<Player>().Update(player);
 
@@ -50,6 +53,13 @@ namespace Services.Services
             return playerResponseList;
         }
 
+        private static bool CheckAmountOfPlayers(List<Player> playersList)
+        {
+            var participants = playersList.Count;
 
+            var res = participants > 0 && (participants & (participants - 1)) == 0;
+
+            return res;
+        }
     }
 }

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Contracts.DTO.Responses.Player;
 using Data.Entities;
-using DTO.Responses;
 
 namespace Contracts.Mappers
 {
     public static class PlayerMapper
     {
-        public static PlayerStatsResponse ToPlayerStatsResponse(this Player data)
+        public static PlayerStats ToPlayerStatsResponse(this Player data)
         {
-            return new PlayerStatsResponse()
+            return new PlayerStats()
             {
                 Id = data.Id,
                 Name = data.Name,
@@ -18,6 +18,8 @@ namespace Contracts.Mappers
                 Hability = data.Hability,
                 Strenght = data.Strenght,
                 Speed = data.Speed,
+                TimeReaction = data.TimeReaction,
+                Gender = data.Gender
             };
         }
     }
