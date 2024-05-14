@@ -1,6 +1,6 @@
-namespace UnitTesting
+﻿namespace UnitTesting.Services
 {
-    public class UnitTest1
+    public class ServiceTesting
     {
         [Fact]
         public void Test1()

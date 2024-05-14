@@ -1,5 +1,4 @@
-﻿using Contracts.DTO.Requests;
-using Contracts.DTO.Responses.Player;
+﻿using Contracts.DTO.Responses.Player;
 using Contracts.Mappers;
 using Data.Entities;
 using Data.Repository;
