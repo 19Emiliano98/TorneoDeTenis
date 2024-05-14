@@ -1,4 +1,5 @@
-﻿using Contracts.DTO.Responses.JwtResponse;
+﻿using Contracts.DTO.Requests.Jwt;
+using Contracts.DTO.Responses.JwtResponse;
 using Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,10 @@ namespace Services.Interfaces.User
 {
     public interface IAuthenticationServices
     {
-        TokenResponse generateToken(Users user);
+        Task<TokenResponse> generateToken(Users user);
 
+        Task UpdateRefreshToken(Users userFromDB, string refreshToken);
 
+        public string GenerateRefreshToken();
     }
 }
