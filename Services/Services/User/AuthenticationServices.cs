@@ -30,7 +30,7 @@ namespace Services.Services.User
             _contxt = contxt;
         }
 
-        public  string GenerateRefreshToken()
+        public string GenerateRefreshToken()
         {
 
 
@@ -41,7 +41,7 @@ namespace Services.Services.User
                 return Convert.ToBase64String(randomNumber);
             }
         }
-        public TokenResponse generateToken(Users user)
+        public async Task<TokenResponse> generateToken(Users user)
         {
             if (user == null)
                 throw new ArgumentNullException("user");
@@ -57,14 +57,12 @@ namespace Services.Services.User
                 role = "jugador";
             }
 
-
-
             var claims = new List<Claim>()
             {
-                new Claim("Id", user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.Name),
-                new Claim("Role",role),
-                //new Claim("AdminType",user.Name)
+        new Claim("Id", user.Id.ToString()),
+        new Claim(JwtRegisteredClaimNames.UniqueName, user.Name),
+        new Claim("Role",role),
+        //new Claim("AdminType",user.Name)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationOptions.Key));
@@ -83,7 +81,7 @@ namespace Services.Services.User
                 signingCredentials: credentials
             );
 
-            return new TokenResponse
+            var rta = new TokenResponse()
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 ExpirationToken = expDate,
@@ -91,9 +89,20 @@ namespace Services.Services.User
                 RefreshTokenExpiration = expRefrestokenDate
             };
 
+            // Actualiza el refreshToken en la base de datos
+            user.refreshToken = rta.RefreshToken;
+            user.RefreshTokenExpiration = rta.RefreshTokenExpiration;
 
+            _contxt.Update(user);
+            await _contxt.SaveChangesAsync();
 
+            return rta;
         }
+
+
+
+
+
         public bool ValidateRefreshToken(Users usuario)
         {
             return usuario.RefreshTokenExpiration > DateTime.UtcNow;
@@ -101,6 +110,7 @@ namespace Services.Services.User
 
         public async Task UpdateRefreshToken(Users userFromDB, string refreshToken)
         {
+            //userFromDB.Name =?
             userFromDB.refreshToken = refreshToken;
             userFromDB.RefreshTokenExpiration = DateTime.UtcNow.AddMinutes(_authenticationOptions.RefreshTokenExpiration);
 

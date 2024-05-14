@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
                 throw new BadRequestException("Error de autorización", "No esta autorizado a estar acá");
             }
 
-            var log = _authenticationServices.generateToken(userValid);
+            var log =  await _authenticationServices.generateToken(userValid);
 
             return Ok(log);
 
@@ -56,16 +56,12 @@ namespace WebAPI.Controllers
         {
             var user = await _userService.GetUserByRefreshToken(token.RefreshToken);
 
-            //var newRefreshToken = GenerateRefreshToken();
-
             var newRefreshToken = _authenticationServices.GenerateRefreshToken();
 
             await _authenticationServices.UpdateRefreshToken(user, newRefreshToken);
 
 
             return Ok(new { RefreshToken = newRefreshToken });
-
-
 
         }
 

@@ -18,12 +18,9 @@ namespace WebAPI.Controllers
             _tournamentService = tournamentService;
         }
 
-
-
-
-
-        //[Authorize(Policy ="SuperAdmin")]
-
+        
+        [Authorize]
+        [Authorize(Policy ="SuperAdmin")]
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
@@ -41,7 +38,7 @@ namespace WebAPI.Controllers
             return Ok(getTournament);
         }
 
-        [Authorize(Roles = "arbitro")]
+        //[Authorize(Roles = "arbitro")]
 
 
 
