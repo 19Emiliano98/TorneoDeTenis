@@ -1,4 +1,6 @@
-﻿using Contracts.DTO.Responses.Match;
+﻿using Contracts.DTO.Requests;
+using Contracts.DTO.Responses.Match;
+using Contracts.DTO.Responses.Player;
 using Contracts.DTO.Responses.Tournament;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -104,6 +106,44 @@ namespace UnitTesting.Controllers
 
             // Assert
             Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task InitTournament_CreateTournament_ReturnsChampion()
+        {
+            // Arrange
+            var initTournamentRequest = new InitTournamentRequest
+            {
+                TournamentName = "Copa UnitTesting",
+                TournamentGenderOfPlayers = "Male"
+            };
+
+            var champion = new PlayerStats
+            {
+                Id = 1,
+                Name = "Carlos",
+                Luck = 50,
+                Hability = 30,
+                Strenght = 30,
+                Speed = 20,
+                TimeReaction = 20,
+                Gender = "Male"
+            };
+
+            var mockServiceTournament = new Mock<ITournamentService>();
+            mockServiceTournament.Setup(service => service.InitTournamentMicroService(initTournamentRequest)).ReturnsAsync(champion);
+
+            var controller = new TournamentController(mockServiceTournament.Object);
+
+            // Act
+            var result = await controller.InitTournament(initTournamentRequest);
+
+            // Assert
+            var okObjectValue = Assert.IsType<OkObjectResult>(result);
+            var value = Assert.IsType<PlayerStats>(okObjectValue.Value);
+
+            Assert.Equal("Carlos", value.Name);
+            Assert.Equal("Male", value.Gender);
         }
     }
 }
