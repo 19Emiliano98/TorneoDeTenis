@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
                 throw new BadRequestException("Error de autorización", "No esta autorizado a estar acá");
             }
 
-            var log = _authenticationServices.generateToken(userValid);
+            var log = _authenticationServices.GenerateToken(userValid);
 
             return Ok(log);
 

@@ -1,26 +1,70 @@
 ﻿using Contracts.DTO.Responses.Match;
 using Contracts.DTO.Responses.Tournament;
-using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Services.Interfaces;
-using Services.Services;
 using WebAPI.Controllers;
 
 namespace UnitTesting.Controllers
 {
     public class TournamentTesting
     {
+
         [Fact]
-        public async Task GetTournamentById_ReturnsObject()
+        public async Task GetAllAsync_ReturnsValue()
+        {
+            // Arrange
+            var tournamentList = new List<TournamentGetAll>();
+            var tournament = new TournamentGetAll
+            {
+                Id = 1,
+                Name = "Copa Profes",
+                Champion = "Emiliano",
+                Date = DateTime.Now
+            };
+            tournamentList.Add(tournament);
+
+            var mockServiceTournament = new Mock<ITournamentService>();
+            mockServiceTournament.Setup(service => service.GetAllTournamentsAsync()).ReturnsAsync(tournamentList);
+
+            var controller = new TournamentController(mockServiceTournament.Object);
+
+            // Act
+            var result = await controller.GetAllAsync();
+
+            // Assert
+            var returnValue = Assert.IsType<OkObjectResult>(result);
+            var returnProduct = Assert.IsType<List<TournamentGetAll>>(returnValue.Value);
+
+            Assert.Equal("Copa Profes", returnProduct[0].Name);
+            Assert.Equal("Emiliano", returnProduct[0].Champion);
+        }
+
+        [Fact]
+        public async Task GetAllAsync_ReturnsNotFound()
+        {
+            // Arrange
+            var mockServiceTournament = new Mock<ITournamentService>();
+            mockServiceTournament.Setup(service => service.GetAllTournamentsAsync()).ReturnsAsync(new List<TournamentGetAll>());
+
+            var controller = new TournamentController(mockServiceTournament.Object);
+
+            // Act
+            var result = await controller.GetAllAsync();
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+
+        }
+
+        [Fact]
+        public async Task GetTournamentById_ReturnsValue()
         {
             // Arrange
             var matchsList = new List<MatchData>();
             var match = new MatchData { Id = 1, Winner = "Emiliano", Loser = "Juan" };
             matchsList.Add(match);
 
-            var mockServiceTournament = new Mock<ITournamentService>();
             var tournament = new TournamentResult
             {
                 Name = "Copa Profes",
@@ -29,6 +73,7 @@ namespace UnitTesting.Controllers
                 MatchsPlayed = matchsList
             };
 
+            var mockServiceTournament = new Mock<ITournamentService>();
             mockServiceTournament.Setup(service => service.GetDataTournamentAsync(1)).ReturnsAsync(tournament);
 
             var controller = new TournamentController(mockServiceTournament.Object);
@@ -42,6 +87,23 @@ namespace UnitTesting.Controllers
 
             Assert.Equal("Copa Profes", returnProduct.Name);
             Assert.Equal("Emiliano", returnProduct.Champion);
+            Assert.Equal(matchsList, returnProduct.MatchsPlayed);
+        }
+
+        [Fact]
+        public async Task GetTournamentById_ReturnsNotFound()
+        {
+            // Arrange
+            var mockServiceTournament = new Mock<ITournamentService>();
+            mockServiceTournament.Setup(service => service.GetDataTournamentAsync(2)).ReturnsAsync((TournamentResult)null);
+
+            var controller = new TournamentController(mockServiceTournament.Object);
+
+            // Act
+            var result = await controller.GetTournamentByIdAsync(2);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
         }
     }
 }
