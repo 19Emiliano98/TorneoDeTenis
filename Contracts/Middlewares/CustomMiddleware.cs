@@ -30,10 +30,11 @@ namespace Contracts.Middlewares
             {
                 await exceptionService.GetNotFoundExceptionResponseAsync(context, notFoundRequestException);
             }
-            catch
+            catch(Exception ex) 
             {
-                //await exceptionService.Unauthorized(context, uNauthorized);
 
+                //await exceptionService.Unauthorized(context, uNauthorized);
+                
                 //Alguna logica de que devolvemos en caso de que capturemos esa exception
                 throw;
             }
