@@ -22,7 +22,7 @@ namespace Services.Services.User
             _contxt = contxt;
         }
 
-        private string GenerateRefreshToken()
+        public string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
 
@@ -67,19 +67,23 @@ namespace Services.Services.User
             var token = new JwtSecurityToken(
                 issuer: _authenticationOptions.Issuer,
                 audience: _authenticationOptions.Audience,
-                claims: claims,
-                expires: expDate,
-                signingCredentials: credentials
-            );
+             claims: claims,
+             expires: expDate,
+             signingCredentials: credentials
+         );
 
-            return new TokenResponse
+            var rta = new TokenResponse
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 ExpirationToken = expDate,
                 RefreshToken = GenerateRefreshToken(),
                 RefreshTokenExpiration = expRefrestokenDate
             };
+
+            return rta;
         }
+
+
 
         public bool ValidateRefreshToken(Users usuario)
         {
