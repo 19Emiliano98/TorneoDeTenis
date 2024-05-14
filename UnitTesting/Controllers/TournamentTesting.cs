@@ -1,6 +1,9 @@
-﻿using Data.Entities;
+﻿using Contracts.DTO.Responses.Match;
+using Contracts.DTO.Responses.Tournament;
+using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Moq;
 using Services.Interfaces;
 using Services.Services;
 using WebAPI.Controllers;
@@ -9,30 +12,36 @@ namespace UnitTesting.Controllers
 {
     public class TournamentTesting
     {
-        private readonly TournamentController _controller;
-        private readonly ITournamentService _tournamentService;
-
-        public TournamentTesting()
-        {
-            _tournamentService = new TournamentService();
-            _controller = new TournamentController(_tournamentService);
-        }
-
-        //[Fact]
-        //public void GetAllAsync_Ok()
-        //{
-        //    var result = _controller.GetAllAsync();
-
-        //    Assert.IsType<Task<IActionResult>>(result);
-        //}
-
         [Fact]
-        public async void GetAllAsync_Ok()
+        public async Task GetTournamentById_ReturnsObject()
         {
-            var result = await _controller.GetAllAsync();
+            // Arrange
+            var matchsList = new List<MatchData>();
+            var match = new MatchData { Id = 1, Winner = "Emiliano", Loser = "Juan" };
+            matchsList.Add(match);
 
-            Assert.IsType<OkObjectResult>(result);
-            
+            var mockServiceTournament = new Mock<ITournamentService>();
+            var tournament = new TournamentResult
+            {
+                Name = "Copa Profes",
+                Date = DateTime.Now,
+                Champion = "Emiliano",
+                MatchsPlayed = matchsList
+            };
+
+            mockServiceTournament.Setup(service => service.GetDataTournamentAsync(1)).ReturnsAsync(tournament);
+
+            var controller = new TournamentController(mockServiceTournament.Object);
+
+            // Act
+            var result = await controller.GetTournamentByIdAsync(1);
+
+            // Assert
+            var returnValue = Assert.IsType<OkObjectResult>(result);
+            var returnProduct = Assert.IsType<TournamentResult>(returnValue.Value);
+
+            Assert.Equal("Copa Profes", returnProduct.Name);
+            Assert.Equal("Emiliano", returnProduct.Champion);
         }
     }
 }
