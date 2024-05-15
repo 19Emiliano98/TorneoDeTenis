@@ -24,8 +24,6 @@ namespace Services.Services
             _matchService = matchService;
         }
 
-        public TournamentService(){}
-
         public async Task CreateTournamentAsync(string name)
         {
             var tournament = new HistoryTournament

@@ -17,7 +17,6 @@ namespace Services.Services.User
         {
             _context = context;
             _encryptionService = encryptionService;
-
         }
 
         public async Task CreateUserAsync(UserRequest user)
