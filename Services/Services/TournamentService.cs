@@ -54,9 +54,7 @@ namespace Services.Services
                                     .ToListAsync();
 
             if (tournament == null || matchs == null)
-            {
                 throw new NotFoundException("NotFound", "No se encontraron los datos");
-            }
 
             var matchListResponse = new List<MatchData>();
 
@@ -91,9 +89,7 @@ namespace Services.Services
                                             .FirstOrDefaultAsync();
 
             if (lastTournament == null)
-            {
-                throw new Exception("No existe ningun torneo en la Base de Datos");
-            }
+                throw new NotFoundException("404 Not Found", "No existe ningun torneo en la Base de Datos");
 
             lastTournament.IdPlayer = champeon.Id;
 
@@ -109,9 +105,7 @@ namespace Services.Services
                                             .ToListAsync();
 
             if(!allTournaments.Any())
-            {
-                throw new Exception("No hay torneos en la tabla");
-            }
+                throw new NotFoundException("404 Not Found", "No hay torneos en la tabla");
             
             var AllTournamentList = new List<TournamentGetAll>();
 

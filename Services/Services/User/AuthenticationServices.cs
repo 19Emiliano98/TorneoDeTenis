@@ -29,6 +29,7 @@ namespace Services.Services.User
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomNumber);
+                
                 return Convert.ToBase64String(randomNumber);
             }
         }

@@ -1,5 +1,6 @@
 ﻿using Contracts.DTO.Responses;
 using Contracts.DTO.Responses.JwtResponse;
+using Contracts.Exceptions;
 using Data.Entities;
 using Data.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -25,9 +26,7 @@ namespace Services.Services.User
                                     .FirstOrDefaultAsync(u => u.Name.Equals(user.UserName));
 
             if (User != null)
-            {
-                throw new Exception("El usuario ya existe");
-            }
+                throw new BadRequestException("400 Bad Request", "El usuario ya existe, porfavor inicia sesion en Login");
 
             var newUser = new Users
             {

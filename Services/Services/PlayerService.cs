@@ -1,4 +1,5 @@
 ﻿using Contracts.DTO.Responses.Player;
+using Contracts.Exceptions;
 using Contracts.Mappers;
 using Data.Entities;
 using Data.Repository;
@@ -14,7 +15,6 @@ namespace Services.Services
         public PlayerService(TournamentContext tournamentContext)
         {
             _context = tournamentContext;
-
         }
 
         public async Task<List<PlayerStats>> SetLuckAsync(string gender)
@@ -24,16 +24,10 @@ namespace Services.Services
                                             .ToListAsync();
 
             if(!playersList.Any())
-            {
-                throw new Exception("No hay participantes");
-            }
+                throw new NotFoundException("404 Not Found", "No hay participantes");
 
             if (!CheckAmountOfPlayers(playersList))
-            {
-                // Testear que las condiciones y los resultados sean los esperados
-
-                throw new Exception("Los participantes del torneo no son potencia de 2");
-            }
+                throw new BadRequestException("400 Bad Request", "Los participantes del torneo no son potencia de 2");
 
             var playerResponseList = new List<PlayerStats>();
             

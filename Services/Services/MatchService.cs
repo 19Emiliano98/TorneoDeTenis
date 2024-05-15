@@ -1,4 +1,5 @@
 ﻿using Contracts.DTO.Responses.Player;
+using Contracts.Exceptions;
 using Data.Entities;
 using Data.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -117,9 +118,7 @@ namespace Services.Services
                                                 .FirstOrDefaultAsync();
 
             if (lastTournament == null)
-            {
-                throw new Exception("No existen torneos en la tabla");
-            }
+                throw new NotFoundException("404 Not Found", "No existen torneos en la tabla");
 
             return lastTournament.Id;
         }
