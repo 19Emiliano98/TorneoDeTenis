@@ -23,7 +23,7 @@ namespace Services.Services
                                             .Where(x => x.Gender == gender)
                                             .ToListAsync();
 
-            if(!playersList.Any())
+            if (!playersList.Any())
                 throw new NotFoundException("404 Not Found", "No hay participantes");
 
             if (!CheckAmountOfPlayers(playersList))
@@ -51,7 +51,7 @@ namespace Services.Services
             return playerResponseList;
         }
 
-        private static bool CheckAmountOfPlayers(List<Player> playersList)
+        public bool CheckAmountOfPlayers(List<Player> playersList)
         {
             var participants = playersList.Count;
 
