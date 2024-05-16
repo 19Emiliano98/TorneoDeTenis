@@ -2,6 +2,7 @@
 using Contracts.DTO.Responses.Match;
 using Contracts.DTO.Responses.Player;
 using Contracts.DTO.Responses.Tournament;
+using Contracts.Exceptions;
 using Contracts.Mappers;
 using Data.Entities;
 using Data.Repository;
@@ -22,8 +23,6 @@ namespace Services.Services
             _playerService = playerService;
             _matchService = matchService;
         }
-
-        public TournamentService(){}
 
         public async Task CreateTournamentAsync(string name)
         {
@@ -53,9 +52,7 @@ namespace Services.Services
                                     .ToListAsync();
 
             if (tournament == null || matchs == null)
-            {
-                throw new Exception("Hubo un error al encontrar datos en la tabla de Torneo o Partido");
-            }
+                throw new NotFoundException("NotFound", "No se encontraron los datos");
 
             var matchListResponse = new List<MatchData>();
 
@@ -90,9 +87,7 @@ namespace Services.Services
                                             .FirstOrDefaultAsync();
 
             if (lastTournament == null)
-            {
-                throw new Exception("No existe ningun torneo en la Base de Datos");
-            }
+                throw new NotFoundException("404 Not Found", "No existe ningun torneo en la Base de Datos");
 
             lastTournament.IdPlayer = champeon.Id;
 
@@ -108,9 +103,7 @@ namespace Services.Services
                                             .ToListAsync();
 
             if(!allTournaments.Any())
-            {
-                throw new Exception("No hay torneos en la tabla");
-            }
+                throw new NotFoundException("404 Not Found", "No hay torneos en la tabla");
             
             var AllTournamentList = new List<TournamentGetAll>();
 

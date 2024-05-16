@@ -1,4 +1,5 @@
 ﻿using Contracts.DTO.Requests;
+using Contracts.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
@@ -21,6 +22,11 @@ namespace WebAPI.Controllers
         {
             var response = await _tournamentService.GetAllTournamentsAsync();
 
+            if (!response.Any())
+            {
+                return NotFound();
+            }
+
             return Ok(response);
         }
 
@@ -30,7 +36,12 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetTournamentByIdAsync(int Id)
         {
             var getTournament = await _tournamentService.GetDataTournamentAsync(Id);
-            
+
+            if (getTournament == null)
+            {
+                return NotFound();
+            }
+
             return Ok(getTournament);
         }
 

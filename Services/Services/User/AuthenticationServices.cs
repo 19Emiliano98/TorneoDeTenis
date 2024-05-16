@@ -29,11 +29,12 @@ namespace Services.Services.User
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomNumber);
+                
                 return Convert.ToBase64String(randomNumber);
             }
         }
 
-        public TokenResponse generateToken(Users user)
+        public TokenResponse GenerateToken(Users user)
         {
             if (user == null)
                 throw new ArgumentNullException("user");
@@ -72,13 +73,15 @@ namespace Services.Services.User
                 signingCredentials: credentials
             );
 
-            return new TokenResponse
+            var rta = new TokenResponse
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 ExpirationToken = expDate,
                 RefreshToken = GenerateRefreshToken(),
                 RefreshTokenExpiration = expRefrestokenDate
             };
+
+            return rta;
         }
 
         public bool ValidateRefreshToken(Users usuario)

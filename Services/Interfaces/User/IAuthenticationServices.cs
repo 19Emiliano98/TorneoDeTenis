@@ -11,10 +11,7 @@ namespace Services.Interfaces.User
 {
     public interface IAuthenticationServices
     {
-        Task<TokenResponse> generateToken(Users user);
-
+        TokenResponse GenerateToken(Users user);
         Task UpdateRefreshToken(Users userFromDB, string refreshToken);
-
-        public string GenerateRefreshToken();
     }
 }
