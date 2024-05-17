@@ -1,16 +1,9 @@
-﻿using Contracts.Exceptions;
+﻿using Contracts.DTO.Responses.Player;
+using Contracts.Exceptions;
 using Data.Entities;
 using Data.Repository;
 using Microsoft.EntityFrameworkCore;
-using Moq;
-using Services.Interfaces;
 using Services.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTesting
 {
@@ -118,6 +111,21 @@ namespace UnitTesting
         {
             context.Set<Player>().RemoveRange(context.Set<Player>());
             context.SaveChanges();
+        }
+
+        [Fact]
+        public async Task SetLuckAsync_ReturnsListPlayerStats()
+        {
+            // Arrange
+            var context = CreateContext();
+            var playerService = new PlayerService(context);
+            var gender = "Male";
+
+            // Act
+            var result = await playerService.SetLuckAsync(gender);
+
+            // Asserts
+            Assert.IsType<List<PlayerStats>>(result);
         }
 
         [Fact]
