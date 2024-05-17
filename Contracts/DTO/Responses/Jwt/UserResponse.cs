@@ -14,5 +14,7 @@ namespace Contracts.DTO.Responses.JwtResponse
 
         public string Password { get; set; }
 
+      
+
     }
 }

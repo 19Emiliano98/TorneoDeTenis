@@ -1,4 +1,5 @@
-﻿using Contracts.DTO.Responses.JwtResponse;
+﻿using Contracts.DTO.Requests.Jwt;
+using Contracts.DTO.Responses.JwtResponse;
 using Data.Entities;
 using Data.Repository;
 using Microsoft.IdentityModel.Tokens;
@@ -12,7 +13,6 @@ namespace Services.Services.User
 {
     public class AuthenticationServices : IAuthenticationServices
     {
-        // por que me da ambiguedad 
         private readonly JwtSecurity.AuthenticationOptions _authenticationOptions;
         private readonly TournamentContext _contxt;
 
@@ -32,6 +32,8 @@ namespace Services.Services.User
                 return Convert.ToBase64String(randomNumber);
             }
         }
+
+
 
         public TokenResponse generateToken(Users user)
         {
@@ -72,31 +74,26 @@ namespace Services.Services.User
              signingCredentials: credentials
          );
 
-            var rta = new TokenResponse
+            var rta = new TokenResponse()
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 ExpirationToken = expDate,
                 RefreshToken = GenerateRefreshToken(),
                 RefreshTokenExpiration = expRefrestokenDate
             };
+            user.refreshToken = rta.RefreshToken;
+            user.RefreshTokenExpiration = rta.RefreshTokenExpiration;
 
+            _contxt.Update(user);
             return rta;
         }
-
-
 
         public bool ValidateRefreshToken(Users usuario)
         {
             return usuario.RefreshTokenExpiration > DateTime.UtcNow;
         }
 
-        public async Task UpdateRefreshToken(Users userFromDB, string refreshToken)
-        {
-            userFromDB.refreshToken = refreshToken;
-            userFromDB.RefreshTokenExpiration = DateTime.UtcNow.AddMinutes(_authenticationOptions.RefreshTokenExpiration);
+      
 
-            _contxt.Update(userFromDB);
-            await _contxt.SaveChangesAsync();
-        }
     }
 }

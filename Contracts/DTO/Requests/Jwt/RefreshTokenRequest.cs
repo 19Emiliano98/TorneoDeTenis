@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Contracts.DTO.Requests.Jwt
 {
-    public class TokenRequest
+    public  class RefreshTokenRequest
     {
+        public string Token { get; set; }
         public string RefreshToken { get; set; }
-
-        public DateTime? RefreshTokenExpiration { get; set; }
-
     }
 }

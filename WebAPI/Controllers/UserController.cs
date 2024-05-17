@@ -1,5 +1,7 @@
 ﻿using Contracts.DTO.Responses;
+using Contracts.DTO.Responses.JwtResponse;
 using Contracts.Exceptions;
+using Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces.User;
@@ -13,12 +15,10 @@ namespace WebAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAuthenticationServices _authenticationServices;
-        private readonly IHttpContextAccessor _contextaccesor;
-        public UserController(IUserService userService, IAuthenticationServices service, IHttpContextAccessor contextaccesor)
+        public UserController(IUserService userService, IAuthenticationServices service)
         {
             _userService = userService;
             _authenticationServices = service;
-            _contextaccesor = contextaccesor;
         }
 
         [HttpPost]
@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
 
             return Ok("Usuario Creado");
         }
-        
+
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> LoginAsync(UserRequest userReq)
@@ -41,10 +41,13 @@ namespace WebAPI.Controllers
                 throw new BadRequestException("Error de autorización", "No esta autorizado a estar acá");
             }
 
-            var log =  await _authenticationServices.generateToken(userValid);
-
+            var log = _authenticationServices.generateToken(userValid);
             return Ok(log);
 
         }
+      
+
+
+
     }
 }

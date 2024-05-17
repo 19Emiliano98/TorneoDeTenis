@@ -13,8 +13,7 @@ namespace Services.Interfaces.User
     {
         TokenResponse generateToken(Users user);
 
-        Task UpdateRefreshToken(Users userFromDB, string refreshToken);
+        //Task UpdateRefreshToken(Users userFromDB, TokenResponse tokenResponse);
 
-        public string GenerateRefreshToken();
     }
 }
