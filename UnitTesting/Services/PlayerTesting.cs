@@ -14,7 +14,7 @@ namespace UnitTesting.Services
         public PlayerTesting()
         {
             _options = new DbContextOptionsBuilder<TournamentContext>()
-                .UseInMemoryDatabase(databaseName: "Database")
+                .UseInMemoryDatabase(databaseName: "PlayerTestingDatabase")
                 .Options;
         }
 
@@ -119,8 +119,10 @@ namespace UnitTesting.Services
         {
             // Arrange
             var context = CreateContext();
+            
             ClearDatabase(context);
             SeedDatabase(context);
+            
             var playerService = new PlayerService(context);
             var gender = "Male";
 
@@ -136,8 +138,10 @@ namespace UnitTesting.Services
         {
             // Arrange
             var context = CreateContext();
+            
             ClearDatabase(context);
             SeedDatabase(context);
+            
             var playerService = new PlayerService(context);
             var gender = "Uknown";
 
@@ -153,6 +157,7 @@ namespace UnitTesting.Services
 
             ClearDatabase(context);
             SeedDatabase(context);
+            
             var gender = "Female";
 
             var playersList = context.Set<Player>()

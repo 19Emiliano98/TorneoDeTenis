@@ -56,7 +56,7 @@ namespace UnitTesting.Controllers
             };
 
             var mockServiceTournament = new Mock<ITournamentService>();
-            mockServiceTournament.Setup(service => service.GetDataTournamentAsync(1)).ReturnsAsync(tournament);
+            mockServiceTournament.Setup(service => service.GetDataTournamentByIdAsync(1)).ReturnsAsync(tournament);
 
             var controller = new TournamentController(mockServiceTournament.Object);
 

@@ -8,7 +8,7 @@ namespace Services.Interfaces
     {
         Task CreateTournamentAsync(string name);
         Task SetChampion(PlayerStats champeon);
-        Task<TournamentResult> GetDataTournamentAsync(int Id);
+        Task<TournamentResult> GetDataTournamentByIdAsync(int Id);
         Task<List<TournamentGetAll>> GetAllTournamentsAsync();
         Task<PlayerStats> InitTournamentMicroService(InitTournamentRequest request);
     }

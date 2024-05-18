@@ -37,22 +37,22 @@ namespace Services.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<TournamentResult> GetDataTournamentAsync(int Id)
+        public async Task<TournamentResult> GetDataTournamentByIdAsync(int Id)
         {
             var tournament = await _context.Set<HistoryTournament>()
                                     .OrderByDescending(t => t.Id)
                                     .Where(t => t.Id == Id)
                                     .Include(t => t.IdPlayerForeignKey)
                                     .FirstOrDefaultAsync();
+            
+            if (tournament == null)
+                throw new NotFoundException("TournamentData Fail", "No se encuentra el dato especificado en la busqueda");
 
             var matchs = await _context.Set<Match>()
                                     .Where(t => t.IdTournament == tournament.Id)
                                     .Include(t => t.MatchWinner)
                                     .Include(t => t.MatchLoser)
                                     .ToListAsync();
-
-            if (tournament == null || matchs == null)
-                throw new NotFoundException("NotFound", "No se encontraron los datos");
 
             var matchListResponse = new List<MatchData>();
 

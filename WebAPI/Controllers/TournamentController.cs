@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
         [Authorize(Policy = "Jugador")]
         public async Task<IActionResult> GetTournamentByIdAsync(int Id)
         {
-            var getTournament = await _tournamentService.GetDataTournamentAsync(Id);
+            var getTournament = await _tournamentService.GetDataTournamentByIdAsync(Id);
 
             return Ok(getTournament);
         }
