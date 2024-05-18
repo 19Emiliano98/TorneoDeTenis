@@ -2,6 +2,7 @@
 using Contracts.DTO.Responses.JwtResponse;
 using Data.Entities;
 using Data.Repository;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Services.Interfaces.User;
 using System.IdentityModel.Tokens.Jwt;
@@ -92,8 +93,29 @@ namespace Services.Services.User
         {
             return usuario.RefreshTokenExpiration > DateTime.UtcNow;
         }
+        public TokenResponse RefreshToken(RefreshTokenRequest refreshTokenRequest)
+        {
+            // Primero, busca al usuario por el token
+            var user =  _contxt.Set<Users>()
+                .FirstOrDefault(u => u.refreshToken == refreshTokenRequest.RefreshToken);
 
-      
+            // Si no se encuentra el usuario, lanza una excepción
+            if (user == null)
+            {
+                throw new Exception("Invalid refresh token");
+            }
+
+            // Verifica si el refresh token está expirado
+            if (!ValidateRefreshToken(user))
+            {
+                throw new Exception("Refresh token is expired");
+            }
+
+            // Si el refresh token es válido, genera un nuevo token
+            return generateToken(user);
+        }
+
+
 
     }
 }

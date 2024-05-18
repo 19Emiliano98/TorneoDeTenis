@@ -14,6 +14,8 @@ namespace Services.Interfaces.User
         TokenResponse generateToken(Users user);
 
         //Task UpdateRefreshToken(Users userFromDB, TokenResponse tokenResponse);
+        TokenResponse RefreshToken(RefreshTokenRequest refreshTokenRequest);
+
 
     }
 }
