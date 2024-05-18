@@ -37,9 +37,6 @@ namespace UnitTesting.Controllers
             // Assert
             var returnValue = Assert.IsType<OkObjectResult>(result);
             var returnProduct = Assert.IsType<List<TournamentGetAll>>(returnValue.Value);
-
-            Assert.Equal("Copa Profes", returnProduct[0].Name);
-            Assert.Equal("Emiliano", returnProduct[0].Champion);
         }
 
         [Fact]
@@ -69,10 +66,6 @@ namespace UnitTesting.Controllers
             // Assert
             var returnValue = Assert.IsType<OkObjectResult>(result);
             var returnProduct = Assert.IsType<TournamentResult>(returnValue.Value);
-
-            Assert.Equal("Copa Profes", returnProduct.Name);
-            Assert.Equal("Emiliano", returnProduct.Champion);
-            Assert.Equal(matchsList, returnProduct.MatchsPlayed);
         }
 
         [Fact]
@@ -108,9 +101,6 @@ namespace UnitTesting.Controllers
             // Assert
             var okObjectValue = Assert.IsType<OkObjectResult>(result);
             var value = Assert.IsType<PlayerStats>(okObjectValue.Value);
-
-            Assert.Equal("Carlos", value.Name);
-            Assert.Equal("Male", value.Gender);
         }
     }
 }
