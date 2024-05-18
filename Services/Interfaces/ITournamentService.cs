@@ -6,7 +6,6 @@ namespace Services.Interfaces
 {
     public interface ITournamentService
     {
-        Task CreateTournamentAsync(string name);
         Task SetChampion(PlayerStats champeon);
         Task<TournamentResult> GetDataTournamentByIdAsync(int Id);
         Task<List<TournamentGetAll>> GetAllTournamentsAsync();
