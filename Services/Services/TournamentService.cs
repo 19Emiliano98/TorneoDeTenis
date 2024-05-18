@@ -87,7 +87,7 @@ namespace Services.Services
                                             .FirstOrDefaultAsync();
 
             if (lastTournament == null)
-                throw new NotFoundException("404 Not Found", "No existe ningun torneo en la Base de Datos");
+                throw new NotFoundException("TournamentData Fail", "No es posible encontrar los datos del torneo que se acaba de crear");
 
             lastTournament.IdPlayer = champeon.Id;
 

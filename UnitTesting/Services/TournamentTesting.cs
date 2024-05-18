@@ -1,4 +1,5 @@
-﻿using Contracts.DTO.Responses.Tournament;
+﻿using Contracts.DTO.Responses.Player;
+using Contracts.DTO.Responses.Tournament;
 using Contracts.Exceptions;
 using Data.Entities;
 using Data.Repository;
@@ -86,9 +87,16 @@ namespace UnitTesting.Services
             context.Set<HistoryTournament>().RemoveRange(context.Set<HistoryTournament>());
             context.Set<Match>().RemoveRange(context.Set<Match>());
             context.Set<Player>().RemoveRange(context.Set<Player>());
+
             context.SaveChanges();
         }
+        private static void ClearDatabaseTournament(TournamentContext context)
+        {
+            context.Set<HistoryTournament>().RemoveRange(context.Set<HistoryTournament>());
 
+            context.SaveChanges();
+        }
+        
         [Fact]
         public async Task GetDataTournamentAsync_ReturnTournamentResult()
         {
@@ -124,6 +132,36 @@ namespace UnitTesting.Services
 
             // Act && Asserts
             var exception = await Assert.ThrowsAsync<NotFoundException>(async () => await tournamentService.GetDataTournamentByIdAsync(100));
+        }
+
+        [Fact]
+        public async Task SetChampion_ThrowNotFoundException()
+        {
+            // Arrange
+            var context = CreateContext();
+
+            ClearDatabase(context);
+            SeedDatabase(context);
+            ClearDatabaseTournament(context);
+
+            var playerService = new PlayerService(context);
+            var matchService = new MatchService(context);
+            var tournamentService = new TournamentService(context, playerService, matchService);
+
+            var newChampion = new PlayerStats
+            {
+                Id = 200,
+                Name = "test",
+                Luck = 10,
+                Hability = 20,
+                Strenght = 30,
+                Speed = 20,
+                TimeReaction = 30,
+                Gender = "Male"
+            };
+
+            // Act && Asserts
+            var exception = await Assert.ThrowsAsync<NotFoundException>(async () => await tournamentService.SetChampion(newChampion));
         }
     }
 }
