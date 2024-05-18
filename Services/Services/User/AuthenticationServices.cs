@@ -89,13 +89,9 @@ namespace Services.Services.User
             return usuario.RefreshTokenExpiration > DateTime.UtcNow;
         }
 
-        public async Task UpdateRefreshToken(Users userFromDB, string refreshToken)
-        {
-            userFromDB.refreshToken = refreshToken;
-            userFromDB.RefreshTokenExpiration = DateTime.UtcNow.AddMinutes(_authenticationOptions.RefreshTokenExpiration);
+  
 
-            _contxt.Update(userFromDB);
-            await _contxt.SaveChangesAsync();
-        }
+    
+    
     }
 }
