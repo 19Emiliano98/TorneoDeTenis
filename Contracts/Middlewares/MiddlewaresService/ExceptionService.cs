@@ -46,6 +46,11 @@ namespace Contracts.Middlewares.MiddlewaresService
             await context.Response.Body.WriteAsync(Encoding.UTF8.GetBytes(error));
         }
 
+        public Task GetNotFoundExceptionResponseAsync(HttpContext context, BadRequestException notFoundRequestException)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task Unauthorized(HttpContext context, BadRequestException uNauthorized)
         {
             context.Response.ContentType = context.Response.ContentType == null ?
