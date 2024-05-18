@@ -5,14 +5,14 @@ using Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Services.Services;
 
-namespace UnitTesting
+namespace UnitTesting.Services
 {
     public class PlayerTesting
     {
         private readonly DbContextOptions<TournamentContext> _options;
 
         public PlayerTesting()
-        { 
+        {
             _options = new DbContextOptionsBuilder<TournamentContext>()
                 .UseInMemoryDatabase(databaseName: "Database")
                 .Options;
@@ -21,7 +21,7 @@ namespace UnitTesting
         private TournamentContext CreateContext()
         {
             var context = new TournamentContext(_options);
-            
+
             return context;
         }
 
@@ -119,6 +119,8 @@ namespace UnitTesting
         {
             // Arrange
             var context = CreateContext();
+            ClearDatabase(context);
+            SeedDatabase(context);
             var playerService = new PlayerService(context);
             var gender = "Male";
 
@@ -134,6 +136,8 @@ namespace UnitTesting
         {
             // Arrange
             var context = CreateContext();
+            ClearDatabase(context);
+            SeedDatabase(context);
             var playerService = new PlayerService(context);
             var gender = "Uknown";
 
@@ -166,7 +170,7 @@ namespace UnitTesting
         {
             // Arrange
             var context = CreateContext();
-            
+
             ClearDatabase(context);
             SeedDatabase(context);
             var gender = "Male";

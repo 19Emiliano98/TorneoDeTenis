@@ -7,9 +7,9 @@ using Moq;
 using Services.Interfaces;
 using WebAPI.Controllers;
 
-namespace UnitTesting
+namespace UnitTesting.Controllers
 {
-    public class TournamentTesting
+    public class TournamentControllerTesting
     {
 
         [Fact]
