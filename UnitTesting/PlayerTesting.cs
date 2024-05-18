@@ -21,6 +21,7 @@ namespace UnitTesting
         private TournamentContext CreateContext()
         {
             var context = new TournamentContext(_options);
+            
             return context;
         }
 

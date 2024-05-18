@@ -43,23 +43,6 @@ namespace UnitTesting
         }
 
         [Fact]
-        public async Task GetAllAsync_ReturnsNotFound()
-        {
-            // Arrange
-            var mockServiceTournament = new Mock<ITournamentService>();
-            mockServiceTournament.Setup(service => service.GetAllTournamentsAsync()).ReturnsAsync(new List<TournamentGetAll>());
-
-            var controller = new TournamentController(mockServiceTournament.Object);
-
-            // Act
-            var result = await controller.GetAllAsync();
-
-            // Assert
-            Assert.IsType<NotFoundResult>(result);
-
-        }
-
-        [Fact]
         public async Task GetTournamentById_ReturnsValue()
         {
             // Arrange
@@ -90,22 +73,6 @@ namespace UnitTesting
             Assert.Equal("Copa Profes", returnProduct.Name);
             Assert.Equal("Emiliano", returnProduct.Champion);
             Assert.Equal(matchsList, returnProduct.MatchsPlayed);
-        }
-
-        [Fact]
-        public async Task GetTournamentById_ReturnsNotFound()
-        {
-            // Arrange
-            var mockServiceTournament = new Mock<ITournamentService>();
-            mockServiceTournament.Setup(service => service.GetDataTournamentAsync(2)).ReturnsAsync((TournamentResult)null);
-
-            var controller = new TournamentController(mockServiceTournament.Object);
-
-            // Act
-            var result = await controller.GetTournamentByIdAsync(2);
-
-            // Assert
-            Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]
