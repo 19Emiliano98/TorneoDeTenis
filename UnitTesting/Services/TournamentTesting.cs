@@ -163,5 +163,43 @@ namespace UnitTesting.Services
             // Act && Asserts
             var exception = await Assert.ThrowsAsync<NotFoundException>(async () => await tournamentService.SetChampion(newChampion));
         }
+
+        [Fact]
+        public async Task GetAllTournamentsAsync_ReturnsListAllTournaments()
+        {
+            // Arrange
+            var context = CreateContext();
+
+            ClearDatabase(context);
+            SeedDatabase(context);
+
+            var playerService = new PlayerService(context);
+            var matchService = new MatchService(context);
+            var tournamentService = new TournamentService(context, playerService, matchService);
+
+            // Act
+            var result = await tournamentService.GetAllTournamentsAsync();
+
+            // Asserts
+            Assert.IsType<List<TournamentGetAll>>(result);
+        }
+
+        [Fact]
+        public async Task GetAllTournamentsAsync_ThrowNotFoundException()
+        {
+            // Arrange
+            var context = CreateContext();
+
+            ClearDatabase(context);
+            SeedDatabase(context);
+            ClearDatabaseTournament(context);
+
+            var playerService = new PlayerService(context);
+            var matchService = new MatchService(context);
+            var tournamentService = new TournamentService(context, playerService, matchService);
+
+            // Act && Asserts
+            var exception = await Assert.ThrowsAsync<NotFoundException>(async () => await tournamentService.GetAllTournamentsAsync());
+        }
     }
 }

@@ -81,7 +81,6 @@ namespace Services.Services
 
         public async Task SetChampion(PlayerStats champeon)
         {
-
             var lastTournament = await _context.Set<HistoryTournament>()
                                             .OrderByDescending(t => t.Id)
                                             .FirstOrDefaultAsync();
@@ -103,8 +102,8 @@ namespace Services.Services
                                             .ToListAsync();
 
             if(!allTournaments.Any())
-                throw new NotFoundException("404 Not Found", "No hay torneos en la tabla");
-            
+                throw new NotFoundException("TournamentData Fail", "No es posible encontrar los datos de la tabla de torneos");
+
             var AllTournamentList = new List<TournamentGetAll>();
 
             foreach(var tournament in allTournaments)
