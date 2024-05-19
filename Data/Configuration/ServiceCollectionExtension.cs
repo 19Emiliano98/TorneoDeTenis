@@ -2,11 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Data.Repository;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using JwtSecurity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.OpenApi.Models;
 
 namespace Data.Configuration
 {

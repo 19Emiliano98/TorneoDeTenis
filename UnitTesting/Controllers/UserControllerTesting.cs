@@ -76,7 +76,7 @@ namespace UnitTesting.Controllers
 
   
             mockService.Setup(s => s.UserValidationAsync(loginUser)).ReturnsAsync(expectedUser);
-            authenticationService.Setup(a => a.generateToken(expectedUser)).Returns(expectedTokenResponse);
+            authenticationService.Setup(a => a.GenerateToken(expectedUser)).Returns(expectedTokenResponse);
 
             var controller = new UserController(mockService.Object, authenticationService.Object);
 
