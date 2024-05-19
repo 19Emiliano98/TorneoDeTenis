@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using JwtSecurity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Data.Configuration
 {
