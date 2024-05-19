@@ -94,6 +94,11 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Gender");
+
                     b.Property<int>("Hability")
                         .HasColumnType("int")
                         .HasColumnName("Hability");
@@ -116,9 +121,45 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Strenght");
 
+                    b.Property<int>("TimeReaction")
+                        .HasColumnType("int")
+                        .HasColumnName("TimeReaction");
+
                     b.HasKey("Id");
 
                     b.ToTable("Player", (string)null);
+                });
+
+            modelBuilder.Entity("Data.Entities.Users", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Name");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Password");
+
+                    b.Property<DateTime?>("RefreshTokenExpiration")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("RefeshTokenExpiration");
+
+                    b.Property<string>("refreshToken")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("RefeshToken");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Data.Entities.HistoryTournament", b =>

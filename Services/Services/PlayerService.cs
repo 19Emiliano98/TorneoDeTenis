@@ -1,12 +1,9 @@
-﻿using Contracts.DTO.Requests;
-using Contracts.DTO.Responses;
+﻿using Contracts.DTO.Responses.Player;
 using Contracts.Exceptions;
 using Contracts.Mappers;
 using Data.Entities;
 using Data.Repository;
-using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Services.Interfaces;
 
 namespace Services.Services
@@ -18,21 +15,28 @@ namespace Services.Services
         public PlayerService(TournamentContext tournamentContext)
         {
             _context = tournamentContext;
-
         }
 
-        public async Task<List<PlayerStatsResponse>> SetLuckAsync()
+        public async Task<List<PlayerStats>> SetLuckAsync(string gender)
         {
-            var playersList = await _context.Set<Player>().ToListAsync();
-            
-            var playerResponseList = new List<PlayerStatsResponse>();
+            var playersList = await _context.Set<Player>()
+                                            .Where(x => x.Gender == gender)
+                                            .ToListAsync();
+
+            if (!playersList.Any())
+                throw new NotFoundException("404 Not Found", "No hay participantes");
+
+            if (!CheckAmountOfPlayers(playersList))
+                throw new BadRequestException("400 Bad Request", "Los participantes del torneo no son potencia de 2");
+
+            var playerResponseList = new List<PlayerStats>();
             
             var random = new Random();
 
             foreach (var player in playersList)
             {
 
-                player.Luck = random.Next(0, 101);
+                player.Luck = random.Next(1, 100);
               
                 _context.Set<Player>().Update(player);
 
@@ -45,6 +49,15 @@ namespace Services.Services
             await _context.SaveChangesAsync();
 
             return playerResponseList;
+        }
+
+        public bool CheckAmountOfPlayers(List<Player> playersList)
+        {
+            var participants = playersList.Count;
+
+            var res = participants > 0 && (participants & (participants - 1)) == 0;
+
+            return res;
         }
     }
 }

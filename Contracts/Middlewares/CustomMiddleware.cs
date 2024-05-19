@@ -2,11 +2,6 @@
 using Contracts.Middlewares.MiddlewaresService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Contracts.Middlewares
 {
@@ -31,10 +26,16 @@ namespace Contracts.Middlewares
             {
                 await exceptionService.GetBadRequestExceptionResponseAsync(context, badRequestException);
             }
-            catch
+            catch (NotFoundException notFoundRequestException)
             {
-                //Alguna logica de que devolvemos en caso de que capturemos esa exception
+                await exceptionService.GetNotFoundExceptionResponseAsync(context, notFoundRequestException);
+            }
+            catch 
+            {
 
+                //await exceptionService.Unauthorized(context, uNauthorized);
+                
+                //Alguna logica de que devolvemos en caso de que capturemos esa exception
                 throw;
             }
         }

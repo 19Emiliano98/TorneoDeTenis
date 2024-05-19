@@ -1,19 +1,10 @@
-﻿using Data.Entities;
-using DTO.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Contracts.DTO.Responses.Player;
 
 namespace Services.Interfaces
 {
     public interface IMatchService
     {
-        Task<PlayerStatsResponse> InitMatchAsync(List<PlayerStatsResponse> playerList);
-
-        Task<PlayerStatsResponse> MatchGame(PlayerStatsResponse playerOne, PlayerStatsResponse playerTwo);
-
-     
+        Task<PlayerStats> InitMatchAsync(List<PlayerStats> playerList);
+        Task<PlayerStats> MatchGame(PlayerStats playerOne, PlayerStats playerTwo);
     }
 }

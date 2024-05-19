@@ -44,6 +44,5 @@ namespace Contracts.Exceptions
 
             return JsonConvert.SerializeObject(problemDetails);
         }
-
     }
 }

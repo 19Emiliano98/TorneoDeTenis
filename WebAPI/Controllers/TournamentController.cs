@@ -1,38 +1,47 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Contracts.DTO.Requests;
+using Contracts.Exceptions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
-using Services.Services;
 
 namespace WebAPI.Controllers
 {
-    
     [Route("api/[controller]")]
     [ApiController]
     public class TournamentController : Controller
     {
-        private readonly IPlayerService _playerService;
-        private readonly IMatchService _matchService;
         private readonly ITournamentService _tournamentService;
 
-        public TournamentController(IPlayerService playerService, IMatchService matchService, ITournamentService tournamentService)
+        public TournamentController(ITournamentService tournamentService)
         {
-            _playerService = playerService;
-            _matchService = matchService;
             _tournamentService = tournamentService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> InitTournament()
+        [HttpGet]
+        public async Task<IActionResult> GetAllAsync()
         {
-            await _tournamentService.CreateTournamentAsync("Copa Emiliano");
+            var response = await _tournamentService.GetAllTournamentsAsync();
 
-            var playersList = await _playerService.SetLuckAsync();
-            
-            var champion = await _matchService.InitMatchAsync(playersList);
+            return Ok(response);
+        }
 
-            await _tournamentService.SetChampion(champion);
+        [HttpGet]
+        [Route("{Id}")]
+        [Authorize(Policy = "Jugador")]
+        public async Task<IActionResult> GetTournamentByIdAsync(int Id)
+        {
+            var getTournament = await _tournamentService.GetDataTournamentByIdAsync(Id);
+
+            return Ok(getTournament);
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "Arbitro")]
+        public async Task<IActionResult> InitTournament([FromBody] InitTournamentRequest data)
+        {
+            var champion = await _tournamentService.InitTournamentMicroService(data);
 
             return Ok(champion);
         }
-
     }
 }

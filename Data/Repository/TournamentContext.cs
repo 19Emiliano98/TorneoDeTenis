@@ -30,6 +30,8 @@ namespace Data.Repository
             builder.ApplyConfiguration(new HistoryTournamentConfig());
             builder.ApplyConfiguration(new MatchConfig());
             builder.ApplyConfiguration(new PlayerConfig());
+            builder.ApplyConfiguration(new PlayerConfig());
+            builder.ApplyConfiguration(new UserConfig());
         }
     }
 }

@@ -16,6 +16,6 @@ namespace Contracts.Middlewares.MiddlewaresService
         Task GetNotFoundExceptionResponseAsync(HttpContext context, BadRequestException notFoundRequestException);
 
         Task GetLoopExceptionResponseAsync(HttpContext context, BadRequestException loopException);
-
+        Task GetNotFoundExceptionResponseAsync(HttpContext context, NotFoundException notFoundRequestException);
     }
 }

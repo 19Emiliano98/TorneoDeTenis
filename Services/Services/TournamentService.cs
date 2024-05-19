@@ -1,48 +1,130 @@
-﻿using Data.Entities;
+﻿using Contracts.DTO.Requests;
+using Contracts.DTO.Responses.Match;
+using Contracts.DTO.Responses.Player;
+using Contracts.DTO.Responses.Tournament;
+using Contracts.Exceptions;
+using Contracts.Mappers;
+using Data.Entities;
 using Data.Repository;
-using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Services
 {
-
     public class TournamentService : ITournamentService
     {
         private readonly TournamentContext _context;
+        private readonly IPlayerService _playerService;
+        private readonly IMatchService _matchService;
 
-        public TournamentService(TournamentContext context)
+        public TournamentService(TournamentContext context, IPlayerService playerService, IMatchService matchService)
         {
             _context = context;
+            _playerService = playerService;
+            _matchService = matchService;
         }
 
-        public async Task CreateTournamentAsync(string name)
+        private async Task CreateTournamentAsync(string name)
         {
-            var tournament = new HistoryTournament();
-
-            tournament.Name = name;
-            tournament.Date = DateTime.Now;
+            var tournament = new HistoryTournament
+            {
+                Name = name,
+                Date = DateTime.Now
+            };
 
             _context.Set<HistoryTournament>().Add(tournament);
 
             await _context.SaveChangesAsync();
         }
 
-        public async Task SetChampion(PlayerStatsResponse champeon)
+        public async Task<TournamentResult> GetDataTournamentByIdAsync(int Id)
         {
-      
-            var lastTournament = await _context.Set<HistoryTournament>().OrderByDescending(t => t.Id).FirstOrDefaultAsync();
+            var tournament = await _context.Set<HistoryTournament>()
+                                    .OrderByDescending(t => t.Id)
+                                    .Where(t => t.Id == Id)
+                                    .Include(t => t.IdPlayerForeignKey)
+                                    .FirstOrDefaultAsync();
+            
+            if (tournament == null)
+                throw new NotFoundException("TournamentData Fail", "No se encuentra el dato especificado en la busqueda");
+
+            var matchs = await _context.Set<Match>()
+                                    .Where(t => t.IdTournament == tournament.Id)
+                                    .Include(t => t.MatchWinner)
+                                    .Include(t => t.MatchLoser)
+                                    .ToListAsync();
+
+            var matchListResponse = new List<MatchData>();
+
+            foreach (var match in matchs)
+            {
+                var matchData = new MatchData
+                {
+                    Id = match.Id,
+                    Winner = match.MatchWinner.Name,
+                    Loser = match.MatchLoser.Name
+                };
+
+                matchListResponse.Add(matchData);
+            }
+
+            var response = new TournamentResult
+            {
+                Name = tournament.Name,
+                Date = tournament.Date,
+                Champion = tournament.IdPlayerForeignKey.Name,
+                MatchsPlayed = matchListResponse
+            };
+
+            return response;
+        }
+
+        public async Task SetChampion(PlayerStats champeon)
+        {
+            var lastTournament = await _context.Set<HistoryTournament>()
+                                            .OrderByDescending(t => t.Id)
+                                            .FirstOrDefaultAsync();
+
+            if (lastTournament == null)
+                throw new NotFoundException("TournamentData Fail", "No es posible encontrar los datos del torneo que se acaba de crear");
 
             lastTournament.IdPlayer = champeon.Id;
 
             _context.Set<HistoryTournament>().Update(lastTournament);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<TournamentGetAll>> GetAllTournamentsAsync()
+        {
+            var allTournaments = await _context.Set<HistoryTournament>()
+                                            .Include(t => t.IdPlayerForeignKey)
+                                            .ToListAsync();
+
+            if(!allTournaments.Any())
+                throw new NotFoundException("TournamentData Fail", "No es posible encontrar los datos de la tabla de torneos");
+
+            var AllTournamentList = new List<TournamentGetAll>();
+
+            foreach(var tournament in allTournaments)
+            {
+                AllTournamentList.Add(tournament.ToPlayerStatsResponse());
+            }
+            
+            return AllTournamentList;
+        }
+
+        public async Task<PlayerStats> InitTournamentMicroService(InitTournamentRequest request)
+        {
+            await CreateTournamentAsync(request.TournamentName);
+
+            var playersList = await _playerService.SetLuckAsync(request.TournamentGenderOfPlayers);
+
+            var champion = await _matchService.InitMatchAsync(playersList);
+
+            await SetChampion(champion);
+
+            return champion;
         }
     }
 }
