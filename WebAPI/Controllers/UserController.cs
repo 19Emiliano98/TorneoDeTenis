@@ -13,12 +13,10 @@ namespace WebAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAuthenticationServices _authenticationServices;
-        private readonly IHttpContextAccessor _contextaccesor;
-        public UserController(IUserService userService, IAuthenticationServices service, IHttpContextAccessor contextaccesor)
+        public UserController(IUserService userService, IAuthenticationServices service)
         {
             _userService = userService;
             _authenticationServices = service;
-            _contextaccesor = contextaccesor;
         }
 
         [HttpPost]
