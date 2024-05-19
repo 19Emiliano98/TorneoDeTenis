@@ -28,7 +28,6 @@ namespace WebAPI.Controllers
         [HttpGet]
         [Route("{Id}")]
         [Authorize(Policy = "Jugador")]
-        [Authorize(Policy = "arbitro")]
         public async Task<IActionResult> GetTournamentByIdAsync(int Id)
         {
             var getTournament = await _tournamentService.GetDataTournamentByIdAsync(Id);
