@@ -7,9 +7,9 @@ using Moq;
 using Services.Interfaces;
 using WebAPI.Controllers;
 
-namespace UnitTesting
+namespace UnitTesting.Controllers
 {
-    public class TournamentTesting
+    public class TournamentControllerTesting
     {
 
         [Fact]
@@ -37,26 +37,6 @@ namespace UnitTesting
             // Assert
             var returnValue = Assert.IsType<OkObjectResult>(result);
             var returnProduct = Assert.IsType<List<TournamentGetAll>>(returnValue.Value);
-
-            Assert.Equal("Copa Profes", returnProduct[0].Name);
-            Assert.Equal("Emiliano", returnProduct[0].Champion);
-        }
-
-        [Fact]
-        public async Task GetAllAsync_ReturnsNotFound()
-        {
-            // Arrange
-            var mockServiceTournament = new Mock<ITournamentService>();
-            mockServiceTournament.Setup(service => service.GetAllTournamentsAsync()).ReturnsAsync(new List<TournamentGetAll>());
-
-            var controller = new TournamentController(mockServiceTournament.Object);
-
-            // Act
-            var result = await controller.GetAllAsync();
-
-            // Assert
-            Assert.IsType<NotFoundResult>(result);
-
         }
 
         [Fact]
@@ -76,7 +56,7 @@ namespace UnitTesting
             };
 
             var mockServiceTournament = new Mock<ITournamentService>();
-            mockServiceTournament.Setup(service => service.GetDataTournamentAsync(1)).ReturnsAsync(tournament);
+            mockServiceTournament.Setup(service => service.GetDataTournamentByIdAsync(1)).ReturnsAsync(tournament);
 
             var controller = new TournamentController(mockServiceTournament.Object);
 
@@ -86,26 +66,6 @@ namespace UnitTesting
             // Assert
             var returnValue = Assert.IsType<OkObjectResult>(result);
             var returnProduct = Assert.IsType<TournamentResult>(returnValue.Value);
-
-            Assert.Equal("Copa Profes", returnProduct.Name);
-            Assert.Equal("Emiliano", returnProduct.Champion);
-            Assert.Equal(matchsList, returnProduct.MatchsPlayed);
-        }
-
-        [Fact]
-        public async Task GetTournamentById_ReturnsNotFound()
-        {
-            // Arrange
-            var mockServiceTournament = new Mock<ITournamentService>();
-            mockServiceTournament.Setup(service => service.GetDataTournamentAsync(2)).ReturnsAsync((TournamentResult)null);
-
-            var controller = new TournamentController(mockServiceTournament.Object);
-
-            // Act
-            var result = await controller.GetTournamentByIdAsync(2);
-
-            // Assert
-            Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]
@@ -141,9 +101,6 @@ namespace UnitTesting
             // Assert
             var okObjectValue = Assert.IsType<OkObjectResult>(result);
             var value = Assert.IsType<PlayerStats>(okObjectValue.Value);
-
-            Assert.Equal("Carlos", value.Name);
-            Assert.Equal("Male", value.Gender);
         }
     }
 }

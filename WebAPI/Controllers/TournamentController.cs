@@ -22,11 +22,6 @@ namespace WebAPI.Controllers
         {
             var response = await _tournamentService.GetAllTournamentsAsync();
 
-            if (!response.Any())
-            {
-                return NotFound();
-            }
-
             return Ok(response);
         }
 
@@ -36,12 +31,7 @@ namespace WebAPI.Controllers
         [Authorize(Policy = "arbitro")]
         public async Task<IActionResult> GetTournamentByIdAsync(int Id)
         {
-            var getTournament = await _tournamentService.GetDataTournamentAsync(Id);
-
-            if (getTournament == null)
-            {
-                return NotFound();
-            }
+            var getTournament = await _tournamentService.GetDataTournamentByIdAsync(Id);
 
             return Ok(getTournament);
         }
