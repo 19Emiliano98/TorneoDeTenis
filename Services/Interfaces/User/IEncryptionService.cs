@@ -8,10 +8,7 @@ namespace Services.Interfaces.User
 {
     public interface IEncryptionService
     {
-
         public string Encrypt(string name);
         public string Decrypt(string name);
-
-
     }
 }

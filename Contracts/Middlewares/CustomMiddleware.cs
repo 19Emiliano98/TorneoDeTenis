@@ -32,10 +32,6 @@ namespace Contracts.Middlewares
             }
             catch 
             {
-
-                //await exceptionService.Unauthorized(context, uNauthorized);
-                
-                //Alguna logica de que devolvemos en caso de que capturemos esa exception
                 throw;
             }
         }

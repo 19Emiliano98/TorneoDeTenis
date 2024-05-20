@@ -1,5 +1,4 @@
-﻿
-namespace Data.Configuration
+﻿namespace Data.Configuration
 {
     public class ApllicationOptions
     {

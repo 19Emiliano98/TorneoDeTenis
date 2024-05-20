@@ -1,6 +1,5 @@
 ﻿using Contracts.DTO.Responses;
 using Contracts.Exceptions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces.User;
 
@@ -13,6 +12,7 @@ namespace WebAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAuthenticationServices _authenticationServices;
+
         public UserController(IUserService userService, IAuthenticationServices service)
         {
             _userService = userService;

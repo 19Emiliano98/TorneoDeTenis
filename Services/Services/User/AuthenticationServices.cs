@@ -12,14 +12,13 @@ namespace Services.Services.User
 {
     public class AuthenticationServices : IAuthenticationServices
     {
-        // por que me da ambiguedad 
         private readonly JwtSecurity.AuthenticationOptions _authenticationOptions;
-        private readonly TournamentContext _contxt;
+        private readonly TournamentContext _context;
 
         public AuthenticationServices(TournamentContext contxt, JwtSecurity.AuthenticationOptions opt)
         {
             _authenticationOptions = opt;
-            _contxt = contxt;
+            _context = contxt;
         }
 
         private string GenerateRefreshToken()
@@ -88,10 +87,5 @@ namespace Services.Services.User
         {
             return usuario.RefreshTokenExpiration > DateTime.UtcNow;
         }
-
-  
-
-    
-    
     }
 }

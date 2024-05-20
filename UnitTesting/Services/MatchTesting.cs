@@ -142,14 +142,16 @@ namespace UnitTesting.Services
             context.Set<Player>().RemoveRange(context.Set<Player>());
             context.SaveChanges();
         }
+        
         [Fact]
-
         public async Task MatchGame_ReturnWinnerAndLoserOfMatch()
         {
-            // arrg
+            // Arrange
             var context = CreateContext();
+            
             ClearDatabase(context);
             SeedDatabase(context);
+            
             var matchService = new MatchService(context);
             var playerList = context.Set<Player>().ToList();
             var playerOneEntity = playerList[0];
@@ -178,15 +180,11 @@ namespace UnitTesting.Services
             };
 
             // act 
-
             var result = await matchService.MatchGame(playerOne, playerTwo);
 
             //result
             Assert.NotNull(result);
             Assert.Contains(result, new List<PlayerStats> { playerOne, playerTwo });
-
-
-
         }
 
         [Fact]
@@ -217,8 +215,5 @@ namespace UnitTesting.Services
             Assert.NotNull(result);
             Assert.Contains(result.Name, new List<string> { "Carlos", "Emiliano", "Jorge", "Lucas", "Lucrecia", "Paola", "Jorgelina","Fernando" });
         }
-
-      
-
     }
 }

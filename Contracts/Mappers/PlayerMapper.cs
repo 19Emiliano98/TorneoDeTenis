@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Contracts.DTO.Responses.Player;
+﻿using Contracts.DTO.Responses.Player;
 using Data.Entities;
 
 namespace Contracts.Mappers

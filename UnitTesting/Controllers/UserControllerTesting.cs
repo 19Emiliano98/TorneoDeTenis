@@ -1,17 +1,9 @@
 ﻿using Contracts.DTO.Responses;
 using Contracts.DTO.Responses.JwtResponse;
 using Data.Entities;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Newtonsoft.Json;
 using Services.Interfaces.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebAPI.Controllers;
 
 namespace UnitTesting.Controllers
@@ -19,10 +11,9 @@ namespace UnitTesting.Controllers
     public class UserControllerTesting
     {
         [Fact]
-
         public async Task CreateUser()
         {
-            // Arrg
+            // Arrange
             var newUser = new UserRequest
             {
                 UserName = "Carlitos@gmail.com",
@@ -39,17 +30,16 @@ namespace UnitTesting.Controllers
 
             // act 
             var result = await controller.CreateUserAsync(newUser);
+            
             // Assert
             var returnValue = Assert.IsType<OkObjectResult>(result);
             var returnResponse = Assert.IsType<string>(returnValue.Value);
 
         }
-        // testear badrequest
+        
         [Fact]
-
         public async Task LoginUser()
         {
-
             // Arrange
             var loginUser = new UserRequest
             {
@@ -61,7 +51,7 @@ namespace UnitTesting.Controllers
             {
                 Name = "Patatita@arbitro.com",
                 Password = "Patatita"
-            }; // El usuario esperado
+            };
 
             var expectedTokenResponse = new TokenResponse
             {
@@ -92,6 +82,5 @@ namespace UnitTesting.Controllers
             Assert.Equal(expectedTokenResponse.RefreshToken, returnResponse.RefreshToken);
             Assert.Equal(expectedTokenResponse.RefreshTokenExpiration, returnResponse.RefreshTokenExpiration);
         }
-
     }
 }
