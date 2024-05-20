@@ -25,12 +25,8 @@ builder.Services.AddScoped<IEncryptionService, EncryptionService>();
 builder.Services.AddScoped<IAuthenticationServices, AuthenticationServices>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureJwt();
+builder.Services.AddAuthorizationPolicies();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Arbitro", policy => policy.RequireClaim("Role", "arbitro"));
-    options.AddPolicy("Jugador", policy => policy.RequireClaim("Role", "jugador"));
-});
 
 builder.Services.ConfigureSwagger();
 
