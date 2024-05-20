@@ -1,4 +1,5 @@
-﻿using Contracts.DTO.Responses;
+﻿using Contracts.DTO.Requests.Jwt;
+using Contracts.DTO.Responses;
 using Contracts.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces.User;
@@ -42,6 +43,16 @@ namespace WebAPI.Controllers
             var log = _authenticationServices.GenerateToken(userValid);
 
             return Ok(log);
+
+        }
+
+        [HttpPost("RefreshToken")]
+        public IActionResult RefreshToken([FromBody] RefreshTokenRequest refreshTokenRequest)
+        {
+
+            var tokenResponse = _authenticationServices.RefreshToken(refreshTokenRequest);
+
+            return Ok(tokenResponse);
 
         }
     }

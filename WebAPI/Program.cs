@@ -27,7 +27,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureJwt();
 builder.Services.AddAuthorizationPolicies();
 
-
 builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
