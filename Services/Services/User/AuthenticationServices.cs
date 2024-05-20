@@ -86,6 +86,7 @@ namespace Services.Services.User
             user.RefreshTokenExpiration = rta.RefreshTokenExpiration;
 
             _contxt.Update(user);
+            _contxt.SaveChanges();
             return rta;
         }
 

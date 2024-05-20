@@ -26,7 +26,13 @@ namespace Data.Configuration
 
             _config.GetSection(ApllicationOptions.Section).Bind(ApllicationOptions);
 
-            collection.AddDbContext<TournamentContext>(options => options.UseSqlServer(ApllicationOptions.ConnectionString));
+            string connectionStringCar = _config["Application:ConnectionStringCar"];
+            string connectionStringEmi = _config["Application:ConnectionStringEmi"];
+
+
+
+            collection.AddDbContext<TournamentContext>(options => options.UseSqlServer(connectionStringCar));
+            //collection.AddDbContext<TournamentContext>(options => options.UseSqlServer(connectionStringEmi));
         }
 
         public static void AddEcnryptionOptions(this IServiceCollection services)
@@ -115,5 +121,15 @@ namespace Data.Configuration
                 });
             });
         }
+        public static void AddAuthorizationPolicies(this IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Arbitro", policy => policy.RequireClaim("Role", "arbitro"));
+                options.AddPolicy("Jugador", policy => policy.RequireClaim("Role", "jugador"));
+            });
+        }
+
+
     }
 }
