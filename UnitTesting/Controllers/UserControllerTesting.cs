@@ -20,7 +20,6 @@ namespace UnitTesting.Controllers
                 Password = "Parafraseo"
             };
 
-
             var mockServiceUser = new Mock<IUserService>();
             var authenticationService = new Mock<IAuthenticationServices>();
 

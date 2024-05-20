@@ -154,8 +154,10 @@ namespace UnitTesting.Services
             
             var matchService = new MatchService(context);
             var playerList = context.Set<Player>().ToList();
+            
             var playerOneEntity = playerList[0];
             var playerTwoEntity = playerList[1];
+            
             var playerOne = new PlayerStats
             {
                 Id = playerOneEntity.Id,
@@ -167,6 +169,7 @@ namespace UnitTesting.Services
                 TimeReaction = playerOneEntity.TimeReaction,
                 Gender = playerOneEntity.Gender
             };
+            
             var playerTwo = new PlayerStats
             {
                 Id = playerTwoEntity.Id,
@@ -192,8 +195,10 @@ namespace UnitTesting.Services
         {
             // Arrange
             var context = CreateContext();
+            
             ClearDatabase(context);
             SeedDatabase(context);
+            
             var matchService = new MatchService(context);
             var playerList = context.Set<Player>().Select(p => new PlayerStats
             {
@@ -206,7 +211,6 @@ namespace UnitTesting.Services
                 TimeReaction = p.TimeReaction,
                 Gender = p.Gender
             }).ToList();
-
 
             // Act
             var result = await matchService.InitMatchAsync(playerList);
