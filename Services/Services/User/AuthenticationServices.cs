@@ -34,9 +34,7 @@ namespace Services.Services.User
             }
         }
 
-
-
-        public TokenResponse generateToken(Users user)
+        public TokenResponse GenerateToken(Users user)
         {
             if (user == null)
                 throw new ArgumentNullException("user");
@@ -94,6 +92,7 @@ namespace Services.Services.User
         {
             return usuario.RefreshTokenExpiration > DateTime.UtcNow;
         }
+
         public TokenResponse RefreshToken(RefreshTokenRequest refreshTokenRequest)
         {
             // Primero, busca al usuario por el token
@@ -113,7 +112,7 @@ namespace Services.Services.User
             }
 
             // Si el refresh token es válido, genera un nuevo token
-            return generateToken(user);
+            return GenerateToken(user);
         }
 
 
