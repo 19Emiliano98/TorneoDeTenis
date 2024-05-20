@@ -29,10 +29,8 @@ namespace Data.Configuration
             string connectionStringCar = _config["Application:ConnectionStringCar"];
             string connectionStringEmi = _config["Application:ConnectionStringEmi"];
 
-
-
-            collection.AddDbContext<TournamentContext>(options => options.UseSqlServer(connectionStringCar));
-            //collection.AddDbContext<TournamentContext>(options => options.UseSqlServer(connectionStringEmi));
+            //collection.AddDbContext<TournamentContext>(options => options.UseSqlServer(connectionStringCar));
+            collection.AddDbContext<TournamentContext>(options => options.UseSqlServer(connectionStringEmi));
         }
 
         public static void AddEcnryptionOptions(this IServiceCollection services)
